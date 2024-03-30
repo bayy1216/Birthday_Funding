@@ -39,6 +39,30 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Builder
+    private User(String email, String password, String nickname, Integer point, LocalDate birthdate, String profileImageUrl, Role role) {
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+        this.point = point;
+        this.birthdate = birthdate;
+        this.profileImageUrl = profileImageUrl;
+        this.role = role;
+    }
+
+
+    public static User from(UserEmailCreate userEmailCreate) {
+        return User.builder()
+                .email(userEmailCreate.getEmail())
+                .password(userEmailCreate.getPassword())
+                .nickname(userEmailCreate.getNickname())
+                .birthdate(userEmailCreate.getBirthdate())
+                .profileImageUrl(userEmailCreate.getProfileImageUrl())
+                .role(Role.ROLE_USER)
+                .point(0)
+                .build();
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -74,5 +98,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     public boolean isEnabled() {
         return true; // 계정이 활성화(사용가능)인지 리턴(true: 활성화)
     }
+
+
 
 }

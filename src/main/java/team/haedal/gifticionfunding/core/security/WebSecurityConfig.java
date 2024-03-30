@@ -13,12 +13,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 import team.haedal.gifticionfunding.core.jwt.JwtProvider;
 import team.haedal.gifticionfunding.service.user.UserService;
 
 @RequiredArgsConstructor
 @Configurable
 @EnableWebSecurity
+@Component
 public class WebSecurityConfig {
     private final UserService userService;
     private final JwtProvider jwtProvider;
