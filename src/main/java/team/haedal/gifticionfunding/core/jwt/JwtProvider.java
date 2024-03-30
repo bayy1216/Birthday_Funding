@@ -91,7 +91,9 @@ public class JwtProvider {
     }
 
     /**
-     * 토큰 기반으로 인증 정보를 가져온다.
+     * filter에서 사용하는 메서드.
+     * 시큐리티 User를 생성하고, Authentication을 생성한다.
+     * Authentication에 userId와 role이 저장된다.
      */
     public Authentication getAuthentication(String rawToken){
         Claims claims = extractClaims(rawToken);
@@ -115,7 +117,7 @@ public class JwtProvider {
                 .signWith(secretKey)
                 .claim(ROLE, userRole.getValue())
                 .claim(IS_ACCESS_TOKEN, isAccessToken)
-                .setSubject(userEmail)
+                .setSubject(userId.toString())
                 .setExpiration(expireDate)
                 .compact();
     }
