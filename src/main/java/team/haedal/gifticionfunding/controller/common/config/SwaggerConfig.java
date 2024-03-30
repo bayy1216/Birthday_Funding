@@ -13,9 +13,9 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         var info = new Info()
-                .title("AgreeAssociation API")
+                .title("Birthday Funding API")
                 .version("V1")
-                .description("인정협회 AgreeAssociation API 문서입니다.");
+                .description("Birthday Funding API 문서입니다.");
         var bearerKeySecurityScheme = new SecurityScheme()
                 .type(SecurityScheme.Type.HTTP)
                 .scheme("bearer")
