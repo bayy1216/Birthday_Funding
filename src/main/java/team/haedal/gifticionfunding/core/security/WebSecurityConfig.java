@@ -3,6 +3,7 @@ package team.haedal.gifticionfunding.core.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,19 +13,18 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.stereotype.Component;
-import team.haedal.gifticionfunding.core.jwt.JwtProvider;
 import team.haedal.gifticionfunding.service.user.UserService;
 
-@RequiredArgsConstructor
-@Configurable
+
+@Configuration
 @EnableWebSecurity
-@Component
+@RequiredArgsConstructor
 public class WebSecurityConfig {
     private final UserService userService;
-    private final JwtProvider jwtProvider;
-
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
     @Bean
     public WebSecurityCustomizer configure() {
         return (web) -> web.ignoring()
@@ -35,10 +35,10 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        final JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtProvider);
         http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                 authorizationManagerRequestMatcherRegistry
                         .requestMatchers("/login", "/signup", "/", "/user").permitAll()
+                        .requestMatchers("/api/**").permitAll()
                         .anyRequest().authenticated());
 
         http.formLogin(formLogin ->
@@ -46,7 +46,6 @@ public class WebSecurityConfig {
         http.logout(logout ->
                 logout.logoutUrl("/logout").permitAll());
         http.csrf(AbstractHttpConfigurer::disable);
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -61,8 +60,5 @@ public class WebSecurityConfig {
         return http.getSharedObject(AuthenticationManager.class);
     }
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+
 }
