@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.haedal.gifticionfunding.core.exception.ResourceNotFoundException;
@@ -26,6 +27,7 @@ public class GifticonService {
     private final GifticonJpaRepository gifticonJpaRepository;
     private final GifticonQueryRepository gifticonQueryRepository;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
     public Long createGifticon(GifticonCreate gifticonCreate) {
         Gifticon gifticon = Gifticon.create(gifticonCreate);
@@ -51,7 +53,7 @@ public class GifticonService {
         return GifticonDetailDto.from(gifticon);
     }
 
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
     public void updateGifticon(Long gifticonId, GifticonUpdate gifticonUpdate) {
         Gifticon gifticon = gifticonJpaRepository.getById(gifticonId);
@@ -63,6 +65,7 @@ public class GifticonService {
      * 기프티콘 재고 추가
      * 충돌방지를 위해 비관적 락인 PESSIMISTIC_WRITE 사용
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
     public Long addGifticonStock(Long gifticonId, Integer stock) {
         Gifticon gifticon = gifticonJpaRepository.findByIdForUpdate(gifticonId)
@@ -72,7 +75,7 @@ public class GifticonService {
     }
 
 
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
     public void deleteGifticon(Long gifticonId) {
         gifticonJpaRepository.deleteById(gifticonId);
