@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.haedal.gifticionfunding.core.exception.ResourceNotFoundException;
+import team.haedal.gifticionfunding.dto.user.response.UserInfoDto;
 import team.haedal.gifticionfunding.entity.user.User;
 import team.haedal.gifticionfunding.entity.user.UserEmailCreate;
 import team.haedal.gifticionfunding.repository.user.UserJpaRepository;
@@ -36,5 +37,12 @@ public class UserService implements UserDetailsService {
                 });
         User user = User.from(userEmailCreate);
         return userRepository.save(user).getId();
+    }
+
+    @Transactional(readOnly = true)
+    public UserInfoDto getUserInfo(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", userId));
+        return UserInfoDto.from(user);
     }
 }

@@ -6,12 +6,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import team.haedal.gifticionfunding.controller.common.annotation.LoginUserId;
 import team.haedal.gifticionfunding.dto.auth.response.LoginResponse;
 import team.haedal.gifticionfunding.dto.user.request.EmailSignupRequest;
+import team.haedal.gifticionfunding.dto.user.response.UserInfoDto;
 import team.haedal.gifticionfunding.service.auth.AuthService;
 import team.haedal.gifticionfunding.service.user.UserService;
 
@@ -30,5 +29,12 @@ public class UserController {
         var id = userService.createUser(emailSignUpRequest.toCommand());
         var token = authService.login(emailSignUpRequest.email(), emailSignUpRequest.password());
         return LoginResponse.from(token);
+    }
+
+
+    @Operation(summary = "내 정보 조회", description = "성공시 유저 정보 반환")
+    @GetMapping("/api/user/me")
+    public UserInfoDto getUserInfo(@LoginUserId Long userId) {
+        return userService.getUserInfo(userId);
     }
 }
