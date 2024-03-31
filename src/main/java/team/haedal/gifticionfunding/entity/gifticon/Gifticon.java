@@ -74,4 +74,12 @@ public class Gifticon extends BaseTimeEntity {
         this.brand = gifticonUpdate.getBrand();
         this.expirationPeriod = gifticonUpdate.getExpirationPeriod();
     }
+
+    public Long addStock(Integer stock) {
+        if(stock < 0) {
+            throw new IllegalArgumentException("재고는 0 이상이어야 합니다.");
+        }
+        this.stock += stock;
+        return this.stock;
+    }
 }

@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.haedal.gifticionfunding.core.exception.ResourceNotFoundException;
 import team.haedal.gifticionfunding.dto.common.PagingResponse;
 import team.haedal.gifticionfunding.dto.gifticon.response.GifticonDetailDto;
 import team.haedal.gifticionfunding.dto.gifticon.response.GifticonDto;
@@ -47,9 +48,16 @@ public class GifticonService {
     }
 
 
+    /**
+     * 기프티콘 재고 추가
+     * 충돌방지를 위해 비관적 락인 PESSIMISTIC_WRITE 사용
+     */
     @Transactional
-    public Integer addGifticonStock(Long gifticonId, Integer stock) {
-        throw new UnsupportedOperationException("아직 구현되지 않았습니다.");
+    public Long addGifticonStock(Long gifticonId, Integer stock) {
+        Gifticon gifticon = gifticonJpaRepository.findByIdForUpdate(gifticonId)
+                .orElseThrow(() -> new ResourceNotFoundException("Gifticon", gifticonId));
+        Long newStock = gifticon.addStock(stock);
+        return newStock;
     }
 
 
