@@ -73,6 +73,13 @@ public class WebSecurityConfig {
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDeniedHandler)
         );
+
+        /**
+         * JWT 인증 필터를 UsernamePasswordAuthenticationFilter 앞에 추가한다.
+         * UsernamePasswordAuthenticationFilter는 폼 로그인을 처리하는 필터이다.
+         * JWT 인증 필터를 통과하면 UsernamePasswordAuthenticationFilter를 거치지 않고 인증된 사용자로 간주한다.
+         * 즉, 로그인폼에서 진행되던 username, password를 통한 인증을 JWT 인증 필터에서 처리한다.
+         */
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
