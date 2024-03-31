@@ -39,4 +39,39 @@ public class Gifticon extends BaseTimeEntity {
     private Integer expirationPeriod;
 
 
+    @Builder
+    private Gifticon(String name, Integer price, String category, Long stock, String imageUrl, String description,
+                     String brand, Integer expirationPeriod) {
+        this.name = name;
+        this.price = price;
+        this.category = category;
+        this.stock = stock;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.brand = brand;
+        this.expirationPeriod = expirationPeriod;
+    }
+
+    public static Gifticon create(GifticonCreate gifticonCreate) {
+        return Gifticon.builder()
+                .name(gifticonCreate.getName())
+                .price(gifticonCreate.getPrice())
+                .category(gifticonCreate.getCategory())
+                .stock(0L)
+                .imageUrl(gifticonCreate.getImageUrl())
+                .description(gifticonCreate.getDescription())
+                .brand(gifticonCreate.getBrand())
+                .expirationPeriod(gifticonCreate.getExpirationPeriod())
+                .build();
+    }
+
+    public void update(GifticonUpdate gifticonUpdate) {
+        this.name = gifticonUpdate.getName();
+        this.price = gifticonUpdate.getPrice();
+        this.category = gifticonUpdate.getCategory();
+        this.imageUrl = gifticonUpdate.getImageUrl();
+        this.description = gifticonUpdate.getDescription();
+        this.brand = gifticonUpdate.getBrand();
+        this.expirationPeriod = gifticonUpdate.getExpirationPeriod();
+    }
 }
