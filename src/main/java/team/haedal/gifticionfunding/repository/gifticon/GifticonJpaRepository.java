@@ -3,6 +3,8 @@ package team.haedal.gifticionfunding.repository.gifticon;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import team.haedal.gifticionfunding.core.exception.ResourceNotFoundException;
 import team.haedal.gifticionfunding.entity.gifticon.Gifticon;
@@ -16,5 +18,6 @@ public interface GifticonJpaRepository extends JpaRepository<Gifticon, Long> {
     }
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    Optional<Gifticon> findByIdForUpdate(Long id);
+    @Query("select g from Gifticon g where g.id = :id")
+    Optional<Gifticon> findByIdForUpdate(@Param("id") Long id);
 }
