@@ -7,15 +7,21 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import team.haedal.gifticionfunding.core.jwt.JwtProvider;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Slf4j
+@Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtProvider jwtProvider;
 
@@ -30,6 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try{
             rawToken = jwtProvider.parseHeader(request.getHeader("Authorization"),true);
         }catch (Exception e){
+            log.error("토큰 파싱 오류");
             filterChain.doFilter(request, response);
             return;
         }
