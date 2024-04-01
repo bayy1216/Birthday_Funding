@@ -23,7 +23,7 @@ public class FundingContribute extends BaseTimeEntity {
     @JoinColumn(name="user_gifticon_id")
     private UserGifticon userGifticon;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "funding_article_id")
     private FundingArticle fundingArticle;
 
