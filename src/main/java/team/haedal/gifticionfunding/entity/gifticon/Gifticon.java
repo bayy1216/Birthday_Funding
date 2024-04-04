@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.haedal.gifticionfunding.domain.Status;
 import team.haedal.gifticionfunding.entity.common.BaseTimeEntity;
 
 @Getter
@@ -37,6 +38,9 @@ public class Gifticon extends BaseTimeEntity {
 
     @Column(nullable = false)
     private Integer expirationPeriod;
+
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.ACTIVE;
 
 
     @Builder
@@ -81,5 +85,19 @@ public class Gifticon extends BaseTimeEntity {
         }
         this.stock += stock;
         return this.stock;
+    }
+
+    public boolean isActive() {
+        return this.status == Status.ACTIVE;
+    }
+
+    /**
+     * 기프티콘 삭제 soft delete
+     */
+    public void delete() {
+        if(this.status == Status.DELETED) {
+            throw new IllegalArgumentException("이미 삭제된 기프티콘입니다.");
+        }
+        this.status = Status.DELETED;
     }
 }

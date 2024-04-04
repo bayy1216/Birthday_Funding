@@ -70,7 +70,8 @@ public class GifticonService {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
     public void deleteGifticon(Long gifticonId) {
-        gifticonJpaRepository.deleteById(gifticonId);
+        Gifticon gifticon = gifticonJpaRepository.getById(gifticonId);
+        gifticon.delete();
     }
 
 }

@@ -1,6 +1,7 @@
 package team.haedal.gifticionfunding.dto.gifticon.response;
 
 import lombok.Builder;
+import team.haedal.gifticionfunding.domain.Status;
 import team.haedal.gifticionfunding.entity.gifticon.Gifticon;
 
 @Builder
@@ -13,7 +14,8 @@ public record GifticonDetailModel(
         String description,
         String category,
         String brand,
-        Integer expirationPeriod
+        Integer expirationPeriod,
+        Status status
 ) {
     public static GifticonDetailModel from(Gifticon gifticon){
         return GifticonDetailModel.builder()
@@ -26,6 +28,7 @@ public record GifticonDetailModel(
                 .category(gifticon.getCategory())
                 .brand(gifticon.getBrand())
                 .expirationPeriod(gifticon.getExpirationPeriod())
+                .status(gifticon.getStatus())
                 .build();
     }
 }

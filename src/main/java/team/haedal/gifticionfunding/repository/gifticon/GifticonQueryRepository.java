@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import team.haedal.gifticionfunding.domain.GifticonSort;
+import team.haedal.gifticionfunding.domain.Status;
 import team.haedal.gifticionfunding.entity.gifticon.Gifticon;
 import team.haedal.gifticionfunding.domain.GifticonSearch;
 
@@ -28,7 +29,8 @@ public class GifticonQueryRepository {
                         eqName(gifticonSearch.getName()),
                         eqCategory(gifticonSearch.getCategory()),
                         eqBrand(gifticonSearch.getBrand()),
-                        betweenPrice(gifticonSearch.getPriceMin(), gifticonSearch.getPriceMax())
+                        betweenPrice(gifticonSearch.getPriceMin(), gifticonSearch.getPriceMax()),
+                        gifticon.status.eq(Status.ACTIVE)
                 )
                 .fetchOne();
         List<Gifticon> gifticons = jpaQueryFactory.from(gifticon)
