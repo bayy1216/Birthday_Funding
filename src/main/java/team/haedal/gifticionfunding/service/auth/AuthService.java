@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.haedal.gifticionfunding.core.exception.ResourceNotFoundException;
 import team.haedal.gifticionfunding.core.jwt.JwtProvider;
 import team.haedal.gifticionfunding.core.jwt.JwtToken;
+import team.haedal.gifticionfunding.dto.auth.response.LoginResponse;
 import team.haedal.gifticionfunding.entity.user.User;
 import team.haedal.gifticionfunding.entity.user.UserEmailCreate;
 import team.haedal.gifticionfunding.repository.user.UserJpaRepository;
@@ -35,13 +36,14 @@ public class AuthService {
     }
 
     @Transactional(readOnly = true)
-    public JwtToken login(String email, String password) {
+    public LoginResponse login(String email, String password) {
         User user = userJpaRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User", email));
         boolean isPasswordMatch = bCryptPasswordEncoder.matches(password, user.getPassword());
         if (!isPasswordMatch) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
-        return jwtProvider.createToken(user.getId(), user.getRole());
+        JwtToken token = jwtProvider.createToken(user.getId(), user.getRole());
+        return LoginResponse.from(token, user);
     }
 }

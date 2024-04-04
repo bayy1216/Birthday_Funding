@@ -26,16 +26,14 @@ public class AuthController {
     @PostMapping("/api/user/signup-email")
     @ResponseStatus(HttpStatus.CREATED)
     public LoginResponse emailSignUp(@RequestBody @Valid EmailSignupRequest emailSignUpRequest) {
-        var id = authService.createUser(emailSignUpRequest.toCommand());
-        var token = authService.login(emailSignUpRequest.email(), emailSignUpRequest.password());
-        return LoginResponse.from(token);
+        Long id = authService.createUser(emailSignUpRequest.toCommand());
+        return authService.login(emailSignUpRequest.email(), emailSignUpRequest.password());
     }
 
     @Operation(summary = "이메일 로그인", description = "성공시 토큰 반환")
     @PostMapping("/api/auth/login")
     @ResponseStatus(HttpStatus.OK)
     public LoginResponse login(@RequestBody @Valid EmailLoginRequest emailLoginRequest) {
-        var token = authService.login(emailLoginRequest.email(), emailLoginRequest.password());
-        return LoginResponse.from(token);
+        return authService.login(emailLoginRequest.email(), emailLoginRequest.password());
     }
 }

@@ -3,13 +3,11 @@ package team.haedal.gifticionfunding.service.user;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.haedal.gifticionfunding.core.exception.ResourceNotFoundException;
-import team.haedal.gifticionfunding.dto.user.response.UserInfoDto;
+import team.haedal.gifticionfunding.dto.user.response.UserInfoModel;
 import team.haedal.gifticionfunding.entity.user.User;
-import team.haedal.gifticionfunding.entity.user.UserEmailCreate;
 import team.haedal.gifticionfunding.repository.user.UserJpaRepository;
 
 @Slf4j
@@ -28,9 +26,9 @@ public class UserService implements UserDetailsService {
 
 
     @Transactional(readOnly = true)
-    public UserInfoDto getUserInfo(Long userId) {
+    public UserInfoModel getUserInfo(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", userId));
-        return UserInfoDto.from(user);
+        return UserInfoModel.from(user);
     }
 }

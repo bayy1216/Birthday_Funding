@@ -6,14 +6,14 @@ import team.haedal.gifticionfunding.entity.user.User;
 import java.time.LocalDate;
 
 @Builder
-public record UserInfoDto(
+public record UserInfoModel(
         Long id,
         String nickname,
         String profileImageUrl,
         LocalDate birthdate
 ) {
-    public static UserInfoDto from(User user) {
-        return UserInfoDto.builder()
+    public static UserInfoModel from(User user) {
+        return UserInfoModel.builder()
                 .id(user.getId())
                 .nickname(user.getNickname())
                 .profileImageUrl(user.getProfileImageUrl())
