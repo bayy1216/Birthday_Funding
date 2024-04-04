@@ -18,8 +18,6 @@ import team.haedal.gifticionfunding.entity.gifticon.GifticonUpdate;
 import team.haedal.gifticionfunding.repository.gifticon.GifticonJpaRepository;
 import team.haedal.gifticionfunding.repository.gifticon.GifticonQueryRepository;
 
-import java.util.List;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -36,15 +34,9 @@ public class GifticonService {
     }
 
     @Transactional(readOnly = true)
-    public PagingResponse<GifticonModel> getGifticons(PageRequest pageRequest, GifticonSearch gifticonSearch) {
+    public PagingResponse<GifticonModel> pagingGifticons(PageRequest pageRequest, GifticonSearch gifticonSearch) {
         Page<Gifticon> gifticonPage = gifticonQueryRepository.getGifticonPage(pageRequest, gifticonSearch);
-        List<GifticonModel> gifticonModels = gifticonPage.getContent().stream()
-                .map(GifticonModel::from).toList();
-
-        return PagingResponse.<GifticonModel>builder()
-                .hasNext(gifticonPage.hasNext())
-                .data(gifticonModels)
-                .build();
+        return PagingResponse.from(gifticonPage, GifticonModel::from);
     }
 
     @Transactional(readOnly = true)

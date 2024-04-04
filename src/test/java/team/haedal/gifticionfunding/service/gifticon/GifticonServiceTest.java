@@ -54,7 +54,7 @@ class GifticonServiceTest {
                 .build();
 
         // when
-        PagingResponse<GifticonModel> gifticons = gifticonService.getGifticons(pageRequest, search);
+        PagingResponse<GifticonModel> gifticons = gifticonService.pagingGifticons(pageRequest, search);
 
         // then
         assertThat(gifticons.data().size()).isEqualTo(1);

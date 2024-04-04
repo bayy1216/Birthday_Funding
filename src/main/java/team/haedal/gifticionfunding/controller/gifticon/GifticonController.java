@@ -25,8 +25,8 @@ public class GifticonController {
     @Operation(summary = "기프티콘 목록 조회", description = "기프티콘 목록 페이징 조회")
     @GetMapping("/api/gifticons")
     @ResponseStatus(HttpStatus.OK)
-    public PagingResponse<GifticonModel> getGifticons(@RequestParam GifticonsQuery query) {
-        return gifticonService.getGifticons(query.toPageRequest(), query.toSearch());
+    public PagingResponse<GifticonModel> pagingGifticons(@RequestParam GifticonsQuery query) {
+        return gifticonService.pagingGifticons(query.toPageRequest(), query.toSearch());
     }
 
     @Operation(summary = "기프티콘 상세 조회", description = "기프티콘 상세 조회")
