@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.haedal.gifticionfunding.core.exception.ResourceNotFoundException;
 import team.haedal.gifticionfunding.dto.common.PagingResponse;
-import team.haedal.gifticionfunding.dto.gifticon.response.GifticonDetailDto;
-import team.haedal.gifticionfunding.dto.gifticon.response.GifticonDto;
+import team.haedal.gifticionfunding.dto.gifticon.response.GifticonDetailModel;
+import team.haedal.gifticionfunding.dto.gifticon.response.GifticonModel;
 import team.haedal.gifticionfunding.entity.gifticon.Gifticon;
 import team.haedal.gifticionfunding.entity.gifticon.GifticonCreate;
 import team.haedal.gifticionfunding.domain.GifticonSearch;
@@ -36,21 +36,21 @@ public class GifticonService {
     }
 
     @Transactional(readOnly = true)
-    public PagingResponse<GifticonDto> getGifticons(PageRequest pageRequest, GifticonSearch gifticonSearch) {
+    public PagingResponse<GifticonModel> getGifticons(PageRequest pageRequest, GifticonSearch gifticonSearch) {
         Page<Gifticon> gifticonPage = gifticonQueryRepository.getGifticonPage(pageRequest, gifticonSearch);
-        List<GifticonDto> gifticonDtos = gifticonPage.getContent().stream()
-                .map(GifticonDto::from).toList();
+        List<GifticonModel> gifticonModels = gifticonPage.getContent().stream()
+                .map(GifticonModel::from).toList();
 
-        return PagingResponse.<GifticonDto>builder()
+        return PagingResponse.<GifticonModel>builder()
                 .hasNext(gifticonPage.hasNext())
-                .data(gifticonDtos)
+                .data(gifticonModels)
                 .build();
     }
 
     @Transactional(readOnly = true)
-    public GifticonDetailDto getGifticon(Long gifticonId) {
+    public GifticonDetailModel getGifticon(Long gifticonId) {
         Gifticon gifticon = gifticonJpaRepository.getById(gifticonId);
-        return GifticonDetailDto.from(gifticon);
+        return GifticonDetailModel.from(gifticon);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

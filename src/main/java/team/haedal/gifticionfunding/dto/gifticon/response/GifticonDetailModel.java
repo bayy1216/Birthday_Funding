@@ -4,7 +4,7 @@ import lombok.Builder;
 import team.haedal.gifticionfunding.entity.gifticon.Gifticon;
 
 @Builder
-public record GifticonDetailDto(
+public record GifticonDetailModel(
         Long id,
         String name,
         Integer price,
@@ -15,8 +15,8 @@ public record GifticonDetailDto(
         String brand,
         Integer expirationPeriod
 ) {
-    public static GifticonDetailDto from(Gifticon gifticon){
-        return GifticonDetailDto.builder()
+    public static GifticonDetailModel from(Gifticon gifticon){
+        return GifticonDetailModel.builder()
                 .id(gifticon.getId())
                 .name(gifticon.getName())
                 .price(gifticon.getPrice())

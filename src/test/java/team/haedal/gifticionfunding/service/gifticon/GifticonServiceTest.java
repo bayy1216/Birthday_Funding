@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import team.haedal.gifticionfunding.domain.GifticonSearch;
 import team.haedal.gifticionfunding.dto.common.PagingResponse;
-import team.haedal.gifticionfunding.dto.gifticon.response.GifticonDto;
+import team.haedal.gifticionfunding.dto.gifticon.response.GifticonModel;
 import team.haedal.gifticionfunding.entity.gifticon.Gifticon;
 import team.haedal.gifticionfunding.repository.gifticon.GifticonJpaRepository;
 
@@ -54,7 +54,7 @@ class GifticonServiceTest {
                 .build();
 
         // when
-        PagingResponse<GifticonDto> gifticons = gifticonService.getGifticons(pageRequest, search);
+        PagingResponse<GifticonModel> gifticons = gifticonService.getGifticons(pageRequest, search);
 
         // then
         assertThat(gifticons.data().size()).isEqualTo(1);

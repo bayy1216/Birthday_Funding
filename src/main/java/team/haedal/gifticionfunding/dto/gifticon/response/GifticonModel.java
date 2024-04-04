@@ -4,14 +4,14 @@ import lombok.Builder;
 import team.haedal.gifticionfunding.entity.gifticon.Gifticon;
 
 @Builder
-public record GifticonDto(
+public record GifticonModel(
         Long id,
         String name,
         Integer price,
         String imageUrl
 ) {
-    public static GifticonDto from(Gifticon gifticon){
-        return GifticonDto.builder()
+    public static GifticonModel from(Gifticon gifticon){
+        return GifticonModel.builder()
                 .id(gifticon.getId())
                 .name(gifticon.getName())
                 .price(gifticon.getPrice())
