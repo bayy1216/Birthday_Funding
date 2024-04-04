@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import team.haedal.gifticionfunding.dto.auth.request.EmailLoginRequest;
 import team.haedal.gifticionfunding.dto.auth.response.LoginResponse;
+import team.haedal.gifticionfunding.dto.user.request.EmailSignupRequest;
 import team.haedal.gifticionfunding.service.auth.AuthService;
 
 @Tag(name = "인증", description = "인증 관련 API")
@@ -20,6 +21,15 @@ import team.haedal.gifticionfunding.service.auth.AuthService;
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
+
+    @Operation(summary = "이메일 회원가입", description = "성공시 토큰 반환")
+    @PostMapping("/api/user/signup-email")
+    @ResponseStatus(HttpStatus.CREATED)
+    public LoginResponse emailSignUp(@RequestBody @Valid EmailSignupRequest emailSignUpRequest) {
+        var id = authService.createUser(emailSignUpRequest.toCommand());
+        var token = authService.login(emailSignUpRequest.email(), emailSignUpRequest.password());
+        return LoginResponse.from(token);
+    }
 
     @Operation(summary = "이메일 로그인", description = "성공시 토큰 반환")
     @PostMapping("/api/auth/login")
