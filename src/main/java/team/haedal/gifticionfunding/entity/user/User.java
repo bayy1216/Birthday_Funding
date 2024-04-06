@@ -4,18 +4,20 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import team.haedal.gifticionfunding.domain.Role;
 import team.haedal.gifticionfunding.entity.common.BaseTimeEntity;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
 @Entity
-public class User extends BaseTimeEntity implements UserDetails {
+public class User extends BaseTimeEntity implements UserDetails, OAuth2User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -65,6 +67,11 @@ public class User extends BaseTimeEntity implements UserDetails {
 
 
     @Override
+    public Map<String, Object> getAttributes() {
+        return null;
+    }
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Set.of(role.getAuthority());
     }
@@ -100,5 +107,8 @@ public class User extends BaseTimeEntity implements UserDetails {
     }
 
 
-
+    @Override
+    public String getName() {
+        return email;
+    }
 }

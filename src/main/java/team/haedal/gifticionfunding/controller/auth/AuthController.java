@@ -23,7 +23,7 @@ public class AuthController {
     private final AuthService authService;
 
     @Operation(summary = "이메일 회원가입", description = "성공시 토큰 반환")
-    @PostMapping("/api/user/signup-email")
+    @PostMapping("/api/auth/signup-email")
     @ResponseStatus(HttpStatus.CREATED)
     public LoginResponse emailSignUp(@RequestBody @Valid EmailSignupRequest emailSignUpRequest) {
         Long id = authService.createUser(emailSignUpRequest.toCommand());
