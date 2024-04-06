@@ -1,4 +1,4 @@
-package team.haedal.gifticionfunding.controller.common.config;
+package team.haedal.gifticionfunding.controller.common.web;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

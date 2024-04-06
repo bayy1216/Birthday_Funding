@@ -1,4 +1,4 @@
-package team.haedal.gifticionfunding.controller.common.config;
+package team.haedal.gifticionfunding.controller.common.web;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

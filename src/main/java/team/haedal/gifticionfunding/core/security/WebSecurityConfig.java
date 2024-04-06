@@ -60,7 +60,7 @@ public class WebSecurityConfig {
                 authorize
                         .requestMatchers(
                                 "/login", "/signup", "/", "/user",
-                                "/api/auth/**","/api/user/signup-email",
+                                "/api/auth/**",
                                 "/swagger-ui/**"
                         ).permitAll()
                         .anyRequest().authenticated()
