@@ -52,14 +52,20 @@ public class FriendshipAction extends BaseTimeEntity {
      */
     public Pair<Friendship,Friendship> makeFriendship() {
         canAcceptCheck();
+        status = FriendShipActionStatus.ACCEPT;
         Friendship first = Friendship.create(fromUser, toUser);
         Friendship second = Friendship.create(toUser, fromUser);
         return Pair.of(first, second);
     }
 
     private void canAcceptCheck() {
-        if(status == FriendShipActionStatus.REQUEST){
+        if(!status.canAccept()){
             throw new IllegalStateException("수락 가능한 상태가 아닙니다.");
         }
+    }
+
+    public void reject() {
+        canAcceptCheck();
+        status = FriendShipActionStatus.REJECT;
     }
 }
