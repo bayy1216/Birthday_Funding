@@ -24,15 +24,15 @@ public class UserFriendService {
         return PagingResponse.from(userPage, UserInfoModel::from);
     }
 
-    public PagingResponse<FriendSentHistoryModel> getSentFriendRequestPaging(PagingRequest pagingRequest, Long userId) {
+    public PagingResponse<FriendSentHistoryModel> getSentFriendRequestPaging(PagingRequest pagingRequest, Long sendUserId) {
         throw new UnsupportedOperationException();
     }
 
-    public Long requestFriend(Long userId, Long friendId) {
+    public Long requestFriend(Long sendUserId, Long receivedUserId) {
         throw new UnsupportedOperationException();
     }
 
-    public PagingResponse<FriendReceivedHistoryModel> getReceivedFriendRequestPaging(PagingRequest pagingRequest, Long userId) {
+    public PagingResponse<FriendReceivedHistoryModel> getReceivedFriendRequestPaging(PagingRequest pagingRequest, Long receivedUserId) {
         throw new UnsupportedOperationException();
     }
 
