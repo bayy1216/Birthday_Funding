@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import team.haedal.gifticionfunding.domain.FriendShipActionStatus;
+import team.haedal.gifticionfunding.domain.Pair;
 import team.haedal.gifticionfunding.entity.common.BaseTimeEntity;
 
 @Getter
@@ -45,9 +46,15 @@ public class FriendshipAction extends BaseTimeEntity {
                 .build();
     }
 
-    public Friendship makeFriendship() {
+    /**
+     * FriendshipAction을 Friendship으로 변환합니다.
+     * Pair로 반환하여 두 개의 Friendship을 반환하여 A->B, B->A의 관계를 만듭니다.
+     */
+    public Pair<Friendship,Friendship> makeFriendship() {
         canAcceptCheck();
-        return Friendship.create(fromUser, toUser);
+        Friendship first = Friendship.create(fromUser, toUser);
+        Friendship second = Friendship.create(toUser, fromUser);
+        return Pair.of(first, second);
     }
 
     private void canAcceptCheck() {

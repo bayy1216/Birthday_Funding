@@ -1,6 +1,7 @@
 package team.haedal.gifticionfunding.dto.common;
 
 import jakarta.validation.constraints.Min;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 public record PagingRequest(
@@ -15,5 +16,9 @@ public record PagingRequest(
 
     public Pageable toPageable() {
         return Pageable.ofSize(size).withPage(page);
+    }
+
+    public PageRequest toPageRequest() {
+        return PageRequest.of(page, size);
     }
 }
