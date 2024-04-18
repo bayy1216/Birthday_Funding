@@ -21,18 +21,18 @@ public class FriendshipQueryRepository {
      * [user1]과 친구인 [user2]를 조회한다.
      * [user2]를 fetch join하여 N+1 문제를 해결한다.
      */
-    public Page<Friendship> getFriendshipPage(PageRequest pageRequest, Long user1Id) {
+    public Page<Friendship> getFriendshipPage(PageRequest pageRequest, Long userId) {
         Long count = jpaQueryFactory.from(QFriendship.friendship)
                 .select(QFriendship.friendship.count())
                 .where(
-                        QFriendship.friendship.user1.id.eq(user1Id)
+                        QFriendship.friendship.user.id.eq(userId)
                 )
                 .fetchOne();
         List<Friendship> friendships = jpaQueryFactory.from(QFriendship.friendship)
                 .select(QFriendship.friendship)
-                .join(QFriendship.friendship.user2).fetchJoin()
+                .join(QFriendship.friendship.friend).fetchJoin()
                 .where(
-                        QFriendship.friendship.user1.id.eq(user1Id)
+                        QFriendship.friendship.user.id.eq(userId)
                 )
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())

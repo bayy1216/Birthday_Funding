@@ -18,25 +18,25 @@ public class Friendship extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_1_id")
+    @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user1;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_2_id")
+    @JoinColumn(name = "friend_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user2;
+    private User friend;
 
     @Builder
-    private Friendship(User user1, User user2) {
-        this.user1 = user1;
-        this.user2 = user2;
+    private Friendship(User user, User friend) {
+        this.user = user;
+        this.friend = friend;
     }
 
-    public static Friendship create(User user1, User user2) {
+    public static Friendship create(User user, User friend) {
         return Friendship.builder()
-                .user1(user1)
-                .user2(user2)
+                .user(user)
+                .friend(friend)
                 .build();
     }
 

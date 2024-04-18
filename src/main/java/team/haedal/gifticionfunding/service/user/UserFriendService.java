@@ -33,7 +33,7 @@ public class UserFriendService {
     @Transactional(readOnly = true)
     public PagingResponse<UserInfoModel> getFriendPaging(PagingRequest pagingRequest, Long userId) {
         Page<Friendship> friendshipPage = friendshipQueryRepository.getFriendshipPage(pagingRequest.toPageRequest(), userId);
-        return PagingResponse.from(friendshipPage, friendship -> UserInfoModel.from(friendship.getUser2()));
+        return PagingResponse.from(friendshipPage, friendship -> UserInfoModel.from(friendship.getFriend()));
     }
 
     @Transactional(readOnly = true)
