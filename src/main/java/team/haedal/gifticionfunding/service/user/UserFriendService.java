@@ -63,6 +63,9 @@ public class UserFriendService {
     public void acceptFriendRequest(Long userId, Long actionId) {
         FriendshipAction action = friendshipActionRepository.findById(actionId)
                 .orElseThrow(() -> new IllegalArgumentException("친구 요청이 존재하지 않습니다."));
+        if(!action.getToUser().getId().equals(userId)) {
+            throw new IllegalArgumentException("다른 사용자의 친구 요청을 수락할 수 없습니다.");
+        }
         Pair<Friendship, Friendship> pair = action.makeFriendship();
         friendshipRepository.save(pair.getFirst());
         friendshipRepository.save(pair.getSecond());
