@@ -36,4 +36,23 @@ public class FriendshipAction extends BaseTimeEntity {
         this.toUser = toUser;
         this.status = status;
     }
+
+    public static FriendshipAction create(User fromUser, User toUser, FriendShipActionStatus status) {
+        return FriendshipAction.builder()
+                .fromUser(fromUser)
+                .toUser(toUser)
+                .status(status)
+                .build();
+    }
+
+    public Friendship makeFriendship() {
+        canAcceptCheck();
+        return Friendship.create(fromUser, toUser);
+    }
+
+    private void canAcceptCheck() {
+        if(status == FriendShipActionStatus.REQUEST){
+            throw new IllegalStateException("수락 가능한 상태가 아닙니다.");
+        }
+    }
 }

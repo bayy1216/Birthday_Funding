@@ -1,7 +1,5 @@
 package team.haedal.gifticionfunding.repository.user;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import team.haedal.gifticionfunding.entity.user.User;
 

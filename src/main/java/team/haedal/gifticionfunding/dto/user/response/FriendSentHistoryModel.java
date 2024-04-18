@@ -11,9 +11,9 @@ public record FriendSentHistoryModel(
         UserInfoModel user,
         LocalDateTime createdAt
 ) {
-    public static FriendReceivedHistoryModel from(FriendshipAction action) {
+    public static FriendSentHistoryModel from(FriendshipAction action) {
         var user = action.getToUser();
-        return FriendReceivedHistoryModel.builder()
+        return FriendSentHistoryModel.builder()
                 .id(action.getId())
                 .user(UserInfoModel.from(user))
                 .createdAt(action.getCreatedAt())
