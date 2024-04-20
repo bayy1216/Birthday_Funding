@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import team.haedal.gifticionfunding.core.security.JwtDetails;
 import team.haedal.gifticionfunding.domain.Role;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -43,22 +44,13 @@ public class JwtProvider {
         return header.split(" ")[1];
     }
 
-    public JwtToken createToken(Long userId, Role userRole){
-        String accessToken = generateToken(userId, userRole,true);
-        String refreshToken = generateToken(userId, userRole,false);
+    public JwtToken createToken(JwtUser jwtUser){
+        String accessToken = generateToken(jwtUser, true);
+        String refreshToken = generateToken(jwtUser,false);
         return JwtToken.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
-    }
-
-    /**
-     * [validateToken] 이후 호출하는 메서드.
-     * UserId를 추출한다.
-     */
-    public Long extractMemberId(String rawToken){
-        Claims claims = extractClaims(rawToken);
-        return Long.parseLong(claims.getSubject());
     }
 
     /**
@@ -84,23 +76,24 @@ public class JwtProvider {
         if(claims.get(IS_ACCESS_TOKEN, Boolean.class)){
             throw new JwtException("RefreshToken이 유효하지 않습니다.");
         }
-        Long userId = Long.parseLong(claims.getSubject());
-        Role userRole = Role.valueOf(claims.get(ROLE, String.class));
-        return generateToken(userId, userRole, true);
+        JwtUser jwtUser = claimsToJwtUser(claims);
+        return generateToken(jwtUser, true);
 
     }
 
     /**
-     * filter에서 사용하는 메서드.
-     * 시큐리티 User를 생성하고, Authentication을 생성한다.
-     * Authentication에 userId와 role이 저장된다.
+     * [validateToken] 이후 호출하는 메서드.
+     * rawToken을 통해 JwtUser를 추출한다.
+     * [jwtUser]는 userId와 role을 가지고 있다. 즉 JWT에 저장된 정보를 추출한다.
      */
-    public Authentication getAuthentication(String rawToken){
+    public JwtUser getJwtUser(String rawToken){
         Claims claims = extractClaims(rawToken);
+        return claimsToJwtUser(claims);
+    }
+
+    private JwtUser claimsToJwtUser(Claims claims){
         Role userRole = Role.valueOf(claims.get(ROLE, String.class));
-        Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(userRole.getValue()));
-        User user = new User(claims.getSubject(), "", authorities);
-        return new UsernamePasswordAuthenticationToken(user, rawToken, authorities);
+        return JwtUser.of(Long.parseLong(claims.getSubject()), userRole);
     }
 
 
@@ -109,15 +102,15 @@ public class JwtProvider {
      * Jwt 토큰생성
      * accessToken과 refreshToken의 다른점은 만료시간과, isAccessToken이다.
      */
-    private String generateToken(Long userId, Role userRole, boolean isAccessToken){
+    private String generateToken(JwtUser jwtUser, boolean isAccessToken){
         Key secretKey = generateKey();
         long expireTime = isAccessToken ? ACCESS_TOKEN_EXPIRE_TIME : REFRESH_TOKEN_EXPIRE_TIME;
         Date expireDate = new Date(System.currentTimeMillis() + expireTime);
         return Jwts.builder()
                 .signWith(secretKey)
-                .claim(ROLE, userRole.getValue())
+                .claim(ROLE, jwtUser.getRole().getValue())
                 .claim(IS_ACCESS_TOKEN, isAccessToken)
-                .setSubject(userId.toString())
+                .setSubject(jwtUser.getId().toString())
                 .setExpiration(expireDate)
                 .compact();
     }

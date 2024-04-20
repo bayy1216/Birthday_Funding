@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.haedal.gifticionfunding.core.exception.ResourceNotFoundException;
 import team.haedal.gifticionfunding.core.jwt.JwtProvider;
 import team.haedal.gifticionfunding.core.jwt.JwtToken;
+import team.haedal.gifticionfunding.core.jwt.JwtUser;
 import team.haedal.gifticionfunding.dto.auth.response.LoginResponse;
 import team.haedal.gifticionfunding.entity.user.User;
 import team.haedal.gifticionfunding.entity.user.UserEmailCreate;
@@ -43,7 +44,8 @@ public class AuthService {
         if (!isPasswordMatch) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
-        JwtToken token = jwtProvider.createToken(user.getId(), user.getRole());
+        JwtUser jwtUser = JwtUser.of(user.getId(), user.getRole());
+        JwtToken token = jwtProvider.createToken(jwtUser);
         return LoginResponse.from(token, user);
     }
 }

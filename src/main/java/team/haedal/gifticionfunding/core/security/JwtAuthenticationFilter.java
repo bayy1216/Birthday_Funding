@@ -8,12 +8,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import team.haedal.gifticionfunding.core.jwt.JwtProvider;
+import team.haedal.gifticionfunding.core.jwt.JwtUser;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -57,7 +59,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
          * 성공시 AuthenticationSuccessHandler, 실패시 AuthenticationFailureHandler를 호출한다.
          */
         if (jwtProvider.validateToken(rawToken)) {
-            Authentication authentication = jwtProvider.getAuthentication(rawToken);
+            JwtUser jwtUser = jwtProvider.getJwtUser(rawToken);
+            JwtDetails jwtDetails = JwtDetails.from(jwtUser);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(jwtDetails, null, jwtDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
