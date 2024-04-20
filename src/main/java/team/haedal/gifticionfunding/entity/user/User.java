@@ -6,6 +6,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import team.haedal.gifticionfunding.domain.Role;
+import team.haedal.gifticionfunding.domain.Vendor;
+import team.haedal.gifticionfunding.domain.VendorUserInfo;
 import team.haedal.gifticionfunding.entity.common.BaseTimeEntity;
 
 import java.time.LocalDate;
@@ -41,8 +43,14 @@ public class User extends BaseTimeEntity implements UserDetails, OAuth2User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(nullable = false, updatable = false)
+    private Vendor vendor;
+
+    @Column(nullable = false, updatable = false)
+    private String vendorEmail;
+
     @Builder
-    private User(String email, String password, String nickname, Integer point, LocalDate birthdate, String profileImageUrl, Role role) {
+    private User(String email, String password, String nickname, Integer point, LocalDate birthdate, String profileImageUrl, Role role, Vendor vendor, String vendorEmail) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -50,9 +58,12 @@ public class User extends BaseTimeEntity implements UserDetails, OAuth2User {
         this.birthdate = birthdate;
         this.profileImageUrl = profileImageUrl;
         this.role = role;
+        this.vendor = vendor;
+        this.vendorEmail = vendorEmail;
     }
 
 
+    @Deprecated(since = "credentials로 OAUTH 인증에 통합될 예정입니다.")
     public static User from(UserEmailCreate userEmailCreate) {
         return User.builder()
                 .email(userEmailCreate.getEmail())
@@ -62,6 +73,28 @@ public class User extends BaseTimeEntity implements UserDetails, OAuth2User {
                 .profileImageUrl(userEmailCreate.getProfileImageUrl())
                 .role(Role.ROLE_USER)
                 .point(0)
+                .vendor(Vendor.CREDENTIALS)
+                .vendorEmail(userEmailCreate.getEmail())
+                .build();
+    }
+
+    public static User create(VendorUserInfo vendorUserInfo) {
+        String email;
+        if(vendorUserInfo.getVendor() == Vendor.CREDENTIALS) {
+            email = vendorUserInfo.getVendorEmail();
+        }else{
+            email = vendorUserInfo.getVendorEmail() + "@" + vendorUserInfo.getVendor().toString();
+        }
+        return User.builder()
+                .email(email)
+                .password(null)
+                .nickname(null)
+                .birthdate(null)
+                .profileImageUrl(null)
+                .role(Role.ROLE_USER)
+                .point(0)
+                .vendor(vendorUserInfo.getVendor())
+                .vendorEmail(vendorUserInfo.getVendorEmail())
                 .build();
     }
 
