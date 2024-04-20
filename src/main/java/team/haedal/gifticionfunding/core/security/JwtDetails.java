@@ -9,7 +9,6 @@ import team.haedal.gifticionfunding.domain.Role;
 
 import java.util.Collection;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Getter
 @Builder

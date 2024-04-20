@@ -5,19 +5,12 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
-import team.haedal.gifticionfunding.core.security.JwtDetails;
 import team.haedal.gifticionfunding.domain.Role;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
-import java.util.Collections;
 import java.util.Date;
-import java.util.Set;
 
 @Component
 public class JwtProvider {
