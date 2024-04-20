@@ -32,6 +32,9 @@ public class AuthService {
                 .ifPresent(user -> {
                     throw new IllegalArgumentException("이미 가입되어 있는 이메일입니다.");
                 });
+        if(userRepository.existsByNickname(userEmailCreate.getNickname())) {
+            throw new IllegalArgumentException("이미 사용중인 닉네임입니다.");
+        }
         User user = User.from(userEmailCreate);
         return userRepository.save(user).getId();
     }
