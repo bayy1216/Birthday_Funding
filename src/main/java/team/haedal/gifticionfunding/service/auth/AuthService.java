@@ -6,6 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.haedal.gifticionfunding.core.exception.ResourceNotFoundException;
 import team.haedal.gifticionfunding.core.jwt.JwtProvider;
 import team.haedal.gifticionfunding.core.jwt.JwtToken;
 import team.haedal.gifticionfunding.core.jwt.JwtUser;
@@ -27,8 +28,8 @@ public class AuthService {
     private final UserJpaRepository userRepository;
     private final List<OAuthClient> oAuthClients;
     private final OAuthLoginUseCase oAuthLoginUseCase;
+    private final JwtProvider jwtProvider;
 
-    @Deprecated(since = "OAUTH 로그인에 포함될 예정입니다.")
     @Transactional
     public Long createUser(UserEmailCreate userEmailCreate) {
         String bCryptPassword = bCryptPasswordEncoder.encode(userEmailCreate.getPassword());
@@ -43,6 +44,19 @@ public class AuthService {
         }
         User user = User.from(userEmailCreate);
         return userRepository.save(user).getId();
+    }
+
+    @Transactional(readOnly = true)
+    public LoginResponse login(String email, String password) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User", email));
+        boolean isPasswordMatch = bCryptPasswordEncoder.matches(password, user.getPassword());
+        if (!isPasswordMatch) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+        JwtUser jwtUser = JwtUser.of(user.getId(), user.getRole());
+        JwtToken token = jwtProvider.createToken(jwtUser);
+        return LoginResponse.from(token, user);
     }
 
     public LoginResponse oAuthLogin(Vendor vendor, String code){

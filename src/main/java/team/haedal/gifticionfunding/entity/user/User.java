@@ -63,7 +63,6 @@ public class User extends BaseTimeEntity implements UserDetails, OAuth2User {
     }
 
 
-    @Deprecated(since = "credentials로 OAUTH 인증에 통합될 예정입니다.")
     public static User from(UserEmailCreate userEmailCreate) {
         return User.builder()
                 .email(userEmailCreate.getEmail())
@@ -73,18 +72,13 @@ public class User extends BaseTimeEntity implements UserDetails, OAuth2User {
                 .profileImageUrl(userEmailCreate.getProfileImageUrl())
                 .role(Role.ROLE_USER)
                 .point(0)
-                .vendor(Vendor.CREDENTIALS)
-                .vendorEmail(userEmailCreate.getEmail())
+                .vendor(null)
+                .vendorEmail(null)
                 .build();
     }
 
     public static User create(VendorUserInfo vendorUserInfo) {
-        String email;
-        if(vendorUserInfo.getVendor() == Vendor.CREDENTIALS) {
-            email = vendorUserInfo.getVendorEmail();
-        }else{
-            email = vendorUserInfo.getVendorEmail() + "@" + vendorUserInfo.getVendor().toString();
-        }
+        String email = vendorUserInfo.getVendorEmail() + "@" + vendorUserInfo.getVendor().toString();
         return User.builder()
                 .email(email)
                 .password(null)
