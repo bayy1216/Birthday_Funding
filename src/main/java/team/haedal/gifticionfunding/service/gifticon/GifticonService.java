@@ -62,8 +62,8 @@ public class GifticonService {
     public Long addGifticonStock(Long gifticonId, Integer stock) {
         Gifticon gifticon = gifticonJpaRepository.findByIdForUpdate(gifticonId)
                 .orElseThrow(() -> new ResourceNotFoundException("Gifticon", gifticonId));
-        Long newStock = gifticon.addStock(stock);
-        return newStock;
+        gifticon.addStock(stock);
+        return gifticon.getStock();
     }
 
 
