@@ -52,7 +52,6 @@ public class FriendshipAction extends BaseTimeEntity {
      */
     public Pair<Friendship,Friendship> makeFriendship() {
         canAcceptCheck();
-        status = FriendShipActionStatus.ACCEPT;
         Friendship first = Friendship.create(fromUser, toUser);
         Friendship second = Friendship.create(toUser, fromUser);
         return Pair.of(first, second);

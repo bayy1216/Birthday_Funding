@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.haedal.gifticionfunding.core.exception.ResourceNotFoundException;
 import team.haedal.gifticionfunding.domain.FriendShipActionStatus;
 import team.haedal.gifticionfunding.domain.Pair;
 import team.haedal.gifticionfunding.dto.common.PagingRequest;
@@ -77,17 +78,19 @@ public class UserFriendService {
      * 친구 요청을 수락한다.
      * 친구 요청을 수락하면 FriendshipAction을 Friendship으로 변환하여 저장한다.
      * A->B, B->A의 Friendship을 생성한다.
+     * 이후 FriendshipAction은 삭제한다.
      */
     @Transactional
     public void acceptFriendRequest(Long userId, Long actionId) {
         FriendshipAction action = friendshipActionRepository.findById(actionId)
-                .orElseThrow(() -> new IllegalArgumentException("친구 요청이 존재하지 않습니다."));
+                .orElseThrow(() -> new ResourceNotFoundException("친구요청", actionId));
         if(!action.getToUser().getId().equals(userId)) {
             throw new IllegalArgumentException("다른 사용자의 친구 요청을 수락할 수 없습니다.");
         }
         Pair<Friendship, Friendship> pair = action.makeFriendship();
         friendshipRepository.save(pair.getFirst());
         friendshipRepository.save(pair.getSecond());
+        friendshipActionRepository.delete(action);
     }
 
     /**
