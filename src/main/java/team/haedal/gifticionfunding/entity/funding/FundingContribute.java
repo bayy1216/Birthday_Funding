@@ -66,4 +66,12 @@ public class FundingContribute extends BaseTimeEntity {
                 .fundingArticle(fundingArticle)
                 .build();
     }
+
+    public int getPrice(){
+        if(point != null){
+            return point;
+        }else{
+            return userGifticon.getPrice();
+        }
+    }
 }

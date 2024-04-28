@@ -66,4 +66,8 @@ public class UserGifticon extends BaseTimeEntity {
     public boolean isOpened(){
         return gifticon != null;
     }
+
+    public int getPrice(){
+        return gifticon.getPrice();
+    }
 }

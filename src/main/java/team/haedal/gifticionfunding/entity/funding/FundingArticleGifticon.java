@@ -37,4 +37,8 @@ public class FundingArticleGifticon extends BaseTimeEntity {
                 .gifticon(gifticon)
                 .build();
     }
+
+    public int getPrice() {
+        return gifticon.getPrice();
+    }
 }
