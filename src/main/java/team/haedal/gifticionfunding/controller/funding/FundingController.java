@@ -14,6 +14,7 @@ import team.haedal.gifticionfunding.dto.funding.request.FundingJoinRequest;
 import team.haedal.gifticionfunding.dto.funding.response.FundingArticleDetailModel;
 import team.haedal.gifticionfunding.dto.gifticon.response.GifticonModel;
 import team.haedal.gifticionfunding.entity.funding.FundingArticle;
+import team.haedal.gifticionfunding.service.funding.FundingQueryService;
 import team.haedal.gifticionfunding.service.funding.FundingService;
 
 @Slf4j
@@ -21,24 +22,25 @@ import team.haedal.gifticionfunding.service.funding.FundingService;
 @RequiredArgsConstructor
 public class FundingController {
     private final FundingService fundingService;
+    private final FundingQueryService fundingQueryService;
 
     @GetMapping("/api/fundings")
     public PagingResponse<GifticonModel> pagingFundings(@AuthenticationPrincipal JwtDetails jwtDetails,
             @Valid PagingRequest pagingRequest
     ) {
-        return null;
+        return fundingQueryService.pagingFundings(pagingRequest, jwtDetails.getUserId());
     }
 
     @GetMapping("/api/fundings/{fundingId}")
     public FundingArticleDetailModel getFundingDetail(@PathVariable Long fundingId) {
-        return null;
+        return fundingQueryService.getFundingDetail(fundingId);
     }
 
     @PostMapping("/api/fundings")
     @ResponseStatus(HttpStatus.CREATED)
     public Long createFunding(@Valid @RequestBody FundingCreateRequest request,
                               @AuthenticationPrincipal JwtDetails jwtDetails) {
-        return null;
+        return fundingService.createFunding(request, jwtDetails.getUserId());
     }
 
     @PostMapping("/api/fundings/{fundingId}/join")
@@ -46,6 +48,7 @@ public class FundingController {
     public void joinFunding(@PathVariable Long fundingId,
                             @Valid @RequestBody FundingJoinRequest request,
                             @AuthenticationPrincipal JwtDetails jwtDetails) {
+        fundingService.joinFunding(fundingId, request, jwtDetails.getUserId());
 
     }
 
