@@ -6,15 +6,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.haedal.gifticionfunding.dto.funding.request.FundingCreateRequest;
 import team.haedal.gifticionfunding.dto.funding.request.FundingJoinRequest;
+import team.haedal.gifticionfunding.entity.funding.FundingArticleCreate;
+import team.haedal.gifticionfunding.entity.user.User;
+import team.haedal.gifticionfunding.repository.user.UserJpaRepository;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class FundingService {
+    private final UserJpaRepository userRepository;
 
     @Transactional
-    public Long createFunding(FundingCreateRequest request, Long userId) {
-        return null;
+    public Long createFunding(FundingArticleCreate create, Long userId) {
+        User user = userRepository.findByIdOrThrow(userId);
+        return 1L;
     }
 
     @Transactional
