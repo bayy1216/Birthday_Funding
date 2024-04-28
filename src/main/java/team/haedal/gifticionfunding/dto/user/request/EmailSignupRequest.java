@@ -3,7 +3,7 @@ package team.haedal.gifticionfunding.dto.user.request;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import team.haedal.gifticionfunding.entity.user.UserEmailCreate;
+import team.haedal.gifticionfunding.domain.user.UserEmailCreate;
 
 import java.time.LocalDate;
 

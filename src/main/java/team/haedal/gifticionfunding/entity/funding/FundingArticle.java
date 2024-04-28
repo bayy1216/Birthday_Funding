@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.haedal.gifticionfunding.domain.funding.FundingArticleCreate;
 import team.haedal.gifticionfunding.entity.common.BaseTimeEntity;
 import team.haedal.gifticionfunding.entity.user.User;
 

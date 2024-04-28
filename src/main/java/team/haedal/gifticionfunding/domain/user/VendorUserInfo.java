@@ -1,4 +1,4 @@
-package team.haedal.gifticionfunding.domain;
+package team.haedal.gifticionfunding.domain.user;
 
 import lombok.Builder;
 import lombok.Getter;

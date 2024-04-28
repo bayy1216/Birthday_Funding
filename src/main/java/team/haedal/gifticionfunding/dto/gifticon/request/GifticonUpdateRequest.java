@@ -2,7 +2,7 @@ package team.haedal.gifticionfunding.dto.gifticon.request;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import team.haedal.gifticionfunding.entity.gifticon.GifticonUpdate;
+import team.haedal.gifticionfunding.domain.giftucon.GifticonUpdate;
 
 public record GifticonUpdateRequest(
         @Min(value = 1,message = "가격은 1원 이상이어야 합니다.")

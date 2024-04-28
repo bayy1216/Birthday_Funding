@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.haedal.gifticionfunding.core.exception.ResourceNotFoundException;
-import team.haedal.gifticionfunding.domain.FriendShipActionStatus;
+import team.haedal.gifticionfunding.domain.user.FriendShipActionStatus;
 import team.haedal.gifticionfunding.domain.Pair;
 import team.haedal.gifticionfunding.dto.common.PagingRequest;
 import team.haedal.gifticionfunding.dto.common.PagingResponse;
@@ -19,8 +19,6 @@ import team.haedal.gifticionfunding.repository.user.FriendshipActionJpaRepositor
 import team.haedal.gifticionfunding.repository.user.FriendshipJpaRepository;
 import team.haedal.gifticionfunding.repository.user.FriendshipQueryRepository;
 import team.haedal.gifticionfunding.repository.user.UserJpaRepository;
-
-import static team.haedal.gifticionfunding.entity.user.QFriendship.friendship;
 
 @RequiredArgsConstructor
 @Service

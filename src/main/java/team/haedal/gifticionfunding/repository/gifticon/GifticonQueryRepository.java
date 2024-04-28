@@ -8,10 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
-import team.haedal.gifticionfunding.domain.GifticonSort;
+import team.haedal.gifticionfunding.domain.giftucon.GifticonSort;
 import team.haedal.gifticionfunding.domain.Status;
 import team.haedal.gifticionfunding.entity.gifticon.Gifticon;
-import team.haedal.gifticionfunding.domain.GifticonSearch;
+import team.haedal.gifticionfunding.domain.giftucon.GifticonSearch;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package team.haedal.gifticionfunding.entity.gifticon;
+package team.haedal.gifticionfunding.domain.giftucon;
 
 import lombok.Builder;
 import lombok.Getter;

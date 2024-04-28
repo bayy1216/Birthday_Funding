@@ -1,4 +1,4 @@
-package team.haedal.gifticionfunding.domain;
+package team.haedal.gifticionfunding.domain.user;
 
 public enum FriendShipActionStatus {
     REQUEST, // 요청

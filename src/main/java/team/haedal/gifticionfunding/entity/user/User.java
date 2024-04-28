@@ -5,9 +5,10 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import team.haedal.gifticionfunding.domain.Role;
-import team.haedal.gifticionfunding.domain.Vendor;
-import team.haedal.gifticionfunding.domain.VendorUserInfo;
+import team.haedal.gifticionfunding.domain.user.Role;
+import team.haedal.gifticionfunding.domain.user.UserEmailCreate;
+import team.haedal.gifticionfunding.domain.user.Vendor;
+import team.haedal.gifticionfunding.domain.user.VendorUserInfo;
 import team.haedal.gifticionfunding.entity.common.BaseTimeEntity;
 
 import java.time.LocalDate;

@@ -5,7 +5,7 @@ import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import team.haedal.gifticionfunding.core.jwt.JwtUser;
-import team.haedal.gifticionfunding.domain.Role;
+import team.haedal.gifticionfunding.domain.user.Role;
 
 import java.util.Collection;
 import java.util.Set;

@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.haedal.gifticionfunding.domain.Status;
+import team.haedal.gifticionfunding.domain.giftucon.GifticonCreate;
+import team.haedal.gifticionfunding.domain.giftucon.GifticonUpdate;
 import team.haedal.gifticionfunding.entity.common.BaseTimeEntity;
 
 @Getter

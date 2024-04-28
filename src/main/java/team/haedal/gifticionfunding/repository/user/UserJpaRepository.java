@@ -2,7 +2,7 @@ package team.haedal.gifticionfunding.repository.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import team.haedal.gifticionfunding.core.exception.ResourceNotFoundException;
-import team.haedal.gifticionfunding.domain.Vendor;
+import team.haedal.gifticionfunding.domain.user.Vendor;
 import team.haedal.gifticionfunding.entity.user.User;
 
 import java.util.Optional;

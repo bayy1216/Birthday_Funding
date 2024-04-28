@@ -12,9 +12,9 @@ import team.haedal.gifticionfunding.dto.common.PagingResponse;
 import team.haedal.gifticionfunding.dto.gifticon.response.GifticonDetailModel;
 import team.haedal.gifticionfunding.dto.gifticon.response.GifticonModel;
 import team.haedal.gifticionfunding.entity.gifticon.Gifticon;
-import team.haedal.gifticionfunding.entity.gifticon.GifticonCreate;
-import team.haedal.gifticionfunding.domain.GifticonSearch;
-import team.haedal.gifticionfunding.entity.gifticon.GifticonUpdate;
+import team.haedal.gifticionfunding.domain.giftucon.GifticonCreate;
+import team.haedal.gifticionfunding.domain.giftucon.GifticonSearch;
+import team.haedal.gifticionfunding.domain.giftucon.GifticonUpdate;
 import team.haedal.gifticionfunding.repository.gifticon.GifticonJpaRepository;
 import team.haedal.gifticionfunding.repository.gifticon.GifticonQueryRepository;
 

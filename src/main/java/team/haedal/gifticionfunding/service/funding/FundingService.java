@@ -4,9 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.haedal.gifticionfunding.dto.funding.request.FundingCreateRequest;
 import team.haedal.gifticionfunding.dto.funding.request.FundingJoinRequest;
-import team.haedal.gifticionfunding.entity.funding.FundingArticleCreate;
+import team.haedal.gifticionfunding.domain.funding.FundingArticleCreate;
 import team.haedal.gifticionfunding.entity.user.User;
 import team.haedal.gifticionfunding.repository.user.UserJpaRepository;
 

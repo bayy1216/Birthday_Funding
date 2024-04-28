@@ -4,9 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import team.haedal.gifticionfunding.entity.funding.FundingArticleCreate;
+import team.haedal.gifticionfunding.domain.funding.FundingArticleCreate;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

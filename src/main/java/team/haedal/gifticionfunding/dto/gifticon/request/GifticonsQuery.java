@@ -1,8 +1,8 @@
 package team.haedal.gifticionfunding.dto.gifticon.request;
 
 import org.springframework.data.domain.PageRequest;
-import team.haedal.gifticionfunding.domain.GifticonSearch;
-import team.haedal.gifticionfunding.domain.GifticonSort;
+import team.haedal.gifticionfunding.domain.giftucon.GifticonSearch;
+import team.haedal.gifticionfunding.domain.giftucon.GifticonSort;
 
 public record GifticonsQuery(
         int page,

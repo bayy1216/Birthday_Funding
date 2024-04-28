@@ -1,4 +1,4 @@
-package team.haedal.gifticionfunding.entity.funding;
+package team.haedal.gifticionfunding.domain.funding;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

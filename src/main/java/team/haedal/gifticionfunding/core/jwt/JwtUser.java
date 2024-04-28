@@ -2,7 +2,7 @@ package team.haedal.gifticionfunding.core.jwt;
 
 import lombok.Builder;
 import lombok.Getter;
-import team.haedal.gifticionfunding.domain.Role;
+import team.haedal.gifticionfunding.domain.user.Role;
 
 @Builder
 @Getter

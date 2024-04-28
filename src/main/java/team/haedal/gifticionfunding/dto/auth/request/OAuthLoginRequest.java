@@ -1,8 +1,7 @@
 package team.haedal.gifticionfunding.dto.auth.request;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import team.haedal.gifticionfunding.domain.Vendor;
+import team.haedal.gifticionfunding.domain.user.Vendor;
 
 public record OAuthLoginRequest(
         @NotBlank(message = "vendor를 입력해주세요.")

@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import team.haedal.gifticionfunding.domain.FriendShipActionStatus;
+import team.haedal.gifticionfunding.domain.user.FriendShipActionStatus;
 import team.haedal.gifticionfunding.domain.Pair;
 import team.haedal.gifticionfunding.entity.common.BaseTimeEntity;
 

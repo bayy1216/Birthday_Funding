@@ -10,11 +10,11 @@ import team.haedal.gifticionfunding.core.exception.ResourceNotFoundException;
 import team.haedal.gifticionfunding.core.jwt.JwtProvider;
 import team.haedal.gifticionfunding.core.jwt.JwtToken;
 import team.haedal.gifticionfunding.core.jwt.JwtUser;
-import team.haedal.gifticionfunding.domain.Vendor;
-import team.haedal.gifticionfunding.domain.VendorUserInfo;
+import team.haedal.gifticionfunding.domain.user.Vendor;
+import team.haedal.gifticionfunding.domain.user.VendorUserInfo;
 import team.haedal.gifticionfunding.dto.auth.response.LoginResponse;
 import team.haedal.gifticionfunding.entity.user.User;
-import team.haedal.gifticionfunding.entity.user.UserEmailCreate;
+import team.haedal.gifticionfunding.domain.user.UserEmailCreate;
 import team.haedal.gifticionfunding.repository.auth.OAuthClient;
 import team.haedal.gifticionfunding.repository.user.UserJpaRepository;
 

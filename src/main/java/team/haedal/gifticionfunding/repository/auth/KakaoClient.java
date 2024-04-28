@@ -1,8 +1,8 @@
 package team.haedal.gifticionfunding.repository.auth;
 
 import org.springframework.stereotype.Repository;
-import team.haedal.gifticionfunding.domain.Vendor;
-import team.haedal.gifticionfunding.domain.VendorUserInfo;
+import team.haedal.gifticionfunding.domain.user.Vendor;
+import team.haedal.gifticionfunding.domain.user.VendorUserInfo;
 
 @Repository
 public class KakaoClient implements OAuthClient{

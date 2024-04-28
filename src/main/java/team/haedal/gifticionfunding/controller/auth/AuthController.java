@@ -10,14 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import team.haedal.gifticionfunding.domain.Vendor;
 import team.haedal.gifticionfunding.dto.auth.request.EmailLoginRequest;
 import team.haedal.gifticionfunding.dto.auth.request.OAuthLoginRequest;
 import team.haedal.gifticionfunding.dto.auth.response.LoginResponse;
 import team.haedal.gifticionfunding.dto.user.request.EmailSignupRequest;
 import team.haedal.gifticionfunding.service.auth.AuthService;
-
-import java.util.Base64;
 
 @Tag(name = "인증", description = "인증 관련 API")
 @Slf4j
