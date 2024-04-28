@@ -6,6 +6,7 @@ import team.haedal.gifticionfunding.dto.user.response.UserInfoModel;
 import team.haedal.gifticionfunding.entity.funding.FundingArticle;
 import team.haedal.gifticionfunding.entity.funding.FundingArticleGifticon;
 import team.haedal.gifticionfunding.entity.funding.FundingContribute;
+import team.haedal.gifticionfunding.entity.gifticon.UserGifticon;
 
 import java.util.List;
 
@@ -28,15 +29,9 @@ public record FundingArticleDetailModel(
      * - FundingArticleGifticon.gifticon
      * - FundingContribute.userGifticon.gifticon
      */
-    public static FundingArticleDetailModel from(
-            FundingArticle fundingArticle,
-            List<FundingContribute> fundingContributes,
-            List<FundingArticleGifticon> fundingArticleGifticons
-    ){
-        int currentMoney = fundingContributes.stream()
-                .mapToInt(FundingContribute::getPrice)
-                .sum();
-        int totalMoney = fundingArticle.getTotalPrice();
+    public static FundingArticleDetailModel from(FundingArticle fundingArticle){
+        int currentMoney = fundingArticle.getCurrentMoney();
+        int totalMoney = fundingArticle.getTotalMoney();
 
         return FundingArticleDetailModel.builder()
                 .id(fundingArticle.getId())
@@ -45,8 +40,9 @@ public record FundingArticleDetailModel(
                 .content(fundingArticle.getContent())
                 .currentMoney(currentMoney)
                 .progress((double) currentMoney / totalMoney)
-                .gifticons(fundingArticleGifticons.stream()
-                        .map(FundingArticleGifticon::getGifticon)
+                .gifticons(fundingArticle.getFundingContributes().stream()
+                        .map(FundingContribute::getUserGifticon)
+                        .map(UserGifticon::getGifticon)
                         .map(GifticonModel::from)
                         .toList())
                 .build();

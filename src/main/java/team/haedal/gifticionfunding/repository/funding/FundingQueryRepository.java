@@ -24,32 +24,17 @@ public class FundingQueryRepository {
     public FundingArticle findByIdWithUserOrThrow(Long fundingId) {
         FundingArticle article = queryFactory
                 .selectFrom(fundingArticle)
-                .join(fundingArticle.user)
-                .fetchJoin()
+                .join(fundingArticle.user).fetchJoin()
+                .join(fundingArticle.fundingArticleGifticons, fundingArticleGifticon).fetchJoin()
+                .join(fundingArticleGifticon.gifticon).fetchJoin()
+                .join(fundingArticle.fundingContributes, fundingContribute).fetchJoin()
+                .join(fundingContribute.userGifticon, userGifticon).fetchJoin()
+                .join(userGifticon.gifticon, gifticon).fetchJoin()
                 .where(fundingArticle.id.eq(fundingId))
                 .fetchOne();
         if(article == null) {
             throw new IllegalArgumentException("해당 펀딩이 존재하지 않습니다.");
         }
         return article;
-    }
-
-    public List<FundingContribute> getFundingContributes(Long fundingId) {
-
-        return queryFactory
-                .selectFrom(fundingContribute)
-                .join(fundingContribute.userGifticon, userGifticon).fetchJoin()
-                .join(userGifticon.gifticon, gifticon).fetchJoin()
-                .where(fundingContribute.fundingArticle.id.eq(fundingId))
-                .fetch();
-    }
-
-    public List<FundingArticleGifticon> getFundingArticleGifticons(Long fundingId) {
-        return queryFactory
-                .selectFrom(fundingArticleGifticon)
-                .join(fundingArticleGifticon.gifticon)
-                .fetchJoin()
-                .where(fundingArticleGifticon.fundingArticle.id.eq(fundingId))
-                .fetch();
     }
 }

@@ -27,9 +27,7 @@ public class FundingQueryService {
     @Transactional(readOnly = true)
     public FundingArticleDetailModel getFundingDetail(Long fundingId) {
         FundingArticle fundingArticle = fundingQueryRepository.findByIdWithUserOrThrow(fundingId);
-        List<FundingContribute> fundingContributes = fundingQueryRepository.getFundingContributes(fundingId);
-        List<FundingArticleGifticon> fundingArticleGifticons = fundingQueryRepository.getFundingArticleGifticons(fundingId);
 
-        return FundingArticleDetailModel.from(fundingArticle, fundingContributes, fundingArticleGifticons);
+        return FundingArticleDetailModel.from(fundingArticle);
     }
 }
