@@ -9,6 +9,7 @@ import org.springframework.lang.NonNull;
 import team.haedal.gifticionfunding.core.exception.ResourceNotFoundException;
 import team.haedal.gifticionfunding.entity.gifticon.Gifticon;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface GifticonJpaRepository extends JpaRepository<Gifticon, Long> {
@@ -20,4 +21,6 @@ public interface GifticonJpaRepository extends JpaRepository<Gifticon, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select g from Gifticon g where g.id = :id")
     Optional<Gifticon> findByIdForUpdate(@Param("id") Long id);
+
+    List<Gifticon> findAllByActiveAndIdIn(boolean active, List<Long> ids);
 }

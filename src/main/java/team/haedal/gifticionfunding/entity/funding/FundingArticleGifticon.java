@@ -2,6 +2,7 @@ package team.haedal.gifticionfunding.entity.funding;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.haedal.gifticionfunding.entity.common.BaseTimeEntity;
@@ -24,4 +25,16 @@ public class FundingArticleGifticon extends BaseTimeEntity {
     @JoinColumn(name = "gifticon_id")
     private Gifticon gifticon;
 
+    @Builder
+    public FundingArticleGifticon(FundingArticle fundingArticle, Gifticon gifticon) {
+        this.fundingArticle = fundingArticle;
+        this.gifticon = gifticon;
+    }
+
+    public static FundingArticleGifticon create(FundingArticle fundingArticle, Gifticon gifticon) {
+        return FundingArticleGifticon.builder()
+                .fundingArticle(fundingArticle)
+                .gifticon(gifticon)
+                .build();
+    }
 }

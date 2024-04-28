@@ -40,7 +40,7 @@ public class FundingController {
     @ResponseStatus(HttpStatus.CREATED)
     public Long createFunding(@Valid @RequestBody FundingCreateRequest request,
                               @AuthenticationPrincipal JwtDetails jwtDetails) {
-        return fundingService.createFunding(request.toCommand(), jwtDetails.getUserId());
+        return fundingService.createFunding(request.toCommand(),request.gifticonIds() ,jwtDetails.getUserId());
     }
 
     @PostMapping("/api/fundings/{fundingId}/join")
