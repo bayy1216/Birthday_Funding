@@ -29,4 +29,41 @@ public class FundingContribute extends BaseTimeEntity {
 
     private Integer point;
 
+    private void validCheck(){
+        if(point !=null && point <=0){
+            throw new IllegalArgumentException("point는 0보다 커야합니다.");
+        }
+        if(point == null && fundingArticle == null){
+            throw new RuntimeException("point와 fundingArticle 둘다 null일 수 없습니다.");
+        }
+        if(point != null && fundingArticle != null){
+            throw new RuntimeException("point와 fundingArticle 둘다 null이 아닐 수 없습니다.");
+        }
+    }
+
+    @Builder
+    public FundingContribute(User user, UserGifticon userGifticon, FundingArticle fundingArticle, Integer point) {
+        this.user = user;
+        this.userGifticon = userGifticon;
+        this.fundingArticle = fundingArticle;
+        this.point = point;
+        validCheck();
+    }
+
+
+    public static FundingContribute create(User user, UserGifticon userGifticon, FundingArticle fundingArticle) {
+        return FundingContribute.builder()
+                .user(user)
+                .userGifticon(userGifticon)
+                .fundingArticle(fundingArticle)
+                .build();
+    }
+
+    public static FundingContribute create(User user, Integer point, FundingArticle fundingArticle) {
+        return FundingContribute.builder()
+                .user(user)
+                .point(point)
+                .fundingArticle(fundingArticle)
+                .build();
+    }
 }

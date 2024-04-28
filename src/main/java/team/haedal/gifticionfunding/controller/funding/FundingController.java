@@ -48,7 +48,7 @@ public class FundingController {
     public void joinFunding(@PathVariable Long fundingId,
                             @Valid @RequestBody FundingJoinRequest request,
                             @AuthenticationPrincipal JwtDetails jwtDetails) {
-        fundingService.joinFunding(fundingId, request, jwtDetails.getUserId());
+        fundingService.joinFunding(fundingId, request.gifticonIds(), jwtDetails.getUserId());
 
     }
 
