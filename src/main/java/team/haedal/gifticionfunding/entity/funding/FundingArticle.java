@@ -7,9 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.haedal.gifticionfunding.domain.funding.FundingArticleCreate;
 import team.haedal.gifticionfunding.entity.common.BaseTimeEntity;
+import team.haedal.gifticionfunding.entity.gifticon.Gifticon;
 import team.haedal.gifticionfunding.entity.user.User;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -36,13 +39,18 @@ public class FundingArticle extends BaseTimeEntity {
     @Column(nullable = false)
     private LocalDateTime endAt;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "fundingArticle",
+            cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FundingArticleGifticon> fundingArticleGifticons = new ArrayList<>();
+
     @Builder
-    public FundingArticle(String title, String content, User user, LocalDateTime startAt, LocalDateTime endAt) {
+    public FundingArticle(String title, String content, User user, LocalDateTime startAt, LocalDateTime endAt, List<FundingArticleGifticon> fundingArticleGifticons) {
         this.title = title;
         this.content = content;
         this.user = user;
         this.startAt = startAt;
         this.endAt = endAt;
+        this.fundingArticleGifticons = fundingArticleGifticons;
     }
 
     public static FundingArticle create(FundingArticleCreate fundingArticleCreate, User user) {
@@ -53,6 +61,34 @@ public class FundingArticle extends BaseTimeEntity {
                 .startAt(fundingArticleCreate.getStartAt())
                 .endAt(fundingArticleCreate.getEndAt())
                 .build();
+    }
+
+    /**
+     * 기프티콘을 인자로 받아서 OneToMany 관계인 FundingArticleGifticon을 생성합니다.
+     */
+    public static FundingArticle create(FundingArticleCreate fundingArticleCreate, User user, List<Gifticon> gifticons) {
+        FundingArticle newArticle =  FundingArticle.builder()
+                .title(fundingArticleCreate.getTitle())
+                .content(fundingArticleCreate.getContent())
+                .user(user)
+                .startAt(fundingArticleCreate.getStartAt())
+                .endAt(fundingArticleCreate.getEndAt())
+                .build();
+        List<FundingArticleGifticon> fundingArticleGifticons = gifticons
+                .stream()
+                .map(gifticon -> FundingArticleGifticon.create(newArticle, gifticon))
+                .toList();
+        newArticle.setFundingArticleGifticons(fundingArticleGifticons);
+        return newArticle;
+    }
+    private void setFundingArticleGifticons(List<FundingArticleGifticon> fundingArticleGifticons) {
+        this.fundingArticleGifticons = fundingArticleGifticons;
+    }
+
+    public int getTotalPrice(){
+        return fundingArticleGifticons.stream()
+                .mapToInt(FundingArticleGifticon::getPrice)
+                .sum();
     }
 
 

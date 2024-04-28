@@ -36,9 +36,7 @@ public record FundingArticleDetailModel(
         int currentMoney = fundingContributes.stream()
                 .mapToInt(FundingContribute::getPrice)
                 .sum();
-        int totalMoney = fundingArticleGifticons.stream()
-                .mapToInt(FundingArticleGifticon::getPrice)
-                .sum();
+        int totalMoney = fundingArticle.getTotalPrice();
 
         return FundingArticleDetailModel.builder()
                 .id(fundingArticle.getId())

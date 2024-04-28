@@ -39,18 +39,13 @@ public class FundingService {
     @Transactional
     public Long createFunding(FundingArticleCreate create, List<Long> gifticonIds, Long userId) {
         User user = userRepository.findByIdOrThrow(userId);
-        FundingArticle fundingArticle = FundingArticle.create(create, user);
+
         List<Gifticon> gifticons = gifticonRepository.findAllByActiveAndIdIn(true, gifticonIds);
 
         if(gifticons.size() != gifticonIds.size()) {
             throw new IllegalArgumentException("존재하지 않는 기프티콘 ID가 포함되어 있습니다.");
         }
-
-        List<FundingArticleGifticon> fundingArticleGifticons
-                = gifticons.stream()
-                .map(gifticon -> FundingArticleGifticon.create(fundingArticle,gifticon)).toList();
-
-
+        FundingArticle fundingArticle = FundingArticle.create(create, user, gifticons);
         return fundingArticle.getId();
     }
 
