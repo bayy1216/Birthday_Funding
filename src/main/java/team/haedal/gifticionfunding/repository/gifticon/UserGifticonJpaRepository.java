@@ -12,6 +12,6 @@ import java.util.List;
 public interface UserGifticonJpaRepository extends JpaRepository<UserGifticon, Long> {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("select ug from UserGifticon ug where ug.id in :id")
+    @Query("select ug from UserGifticon ug where ug.id in :ids")
     List<UserGifticon> findAllByGifticonIdsInForUpdate(@Param("ids") List<Long> gifticonIds);
 }

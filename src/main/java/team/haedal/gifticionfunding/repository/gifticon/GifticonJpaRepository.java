@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import team.haedal.gifticionfunding.core.exception.ResourceNotFoundException;
+import team.haedal.gifticionfunding.domain.Status;
 import team.haedal.gifticionfunding.entity.gifticon.Gifticon;
 
 import java.util.List;
@@ -22,5 +23,5 @@ public interface GifticonJpaRepository extends JpaRepository<Gifticon, Long> {
     @Query("select g from Gifticon g where g.id = :id")
     Optional<Gifticon> findByIdForUpdate(@Param("id") Long id);
 
-    List<Gifticon> findAllByActiveAndIdIn(boolean active, List<Long> ids);
+    List<Gifticon> findAllByStatusAndIdIn(Status status, List<Long> ids);
 }
