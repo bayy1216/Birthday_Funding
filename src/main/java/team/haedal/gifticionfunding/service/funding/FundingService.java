@@ -45,6 +45,7 @@ public class FundingService {
             throw new IllegalArgumentException("존재하지 않는 기프티콘 ID가 포함되어 있습니다.");
         }
         FundingArticle fundingArticle = FundingArticle.create(create, user, gifticons);
+        fundingArticleRepository.save(fundingArticle);
         return fundingArticle.getId();
     }
 
@@ -56,14 +57,13 @@ public class FundingService {
      */
     @Transactional
     public void joinFunding(Long fundingId, List<Long> userGifticonIds, Long userId) {
+        User funder = userRepository.findByIdOrThrow(userId);
         FundingArticle fundingArticle = fundingArticleRepository.findByIdOrThrow(fundingId);
         List<UserGifticon> userGifticons
                 = userGifticonRepository.findAllByGifticonIdsInForUpdate(userGifticonIds);
         if(userGifticons.size() != userGifticonIds.size()) {
             throw new IllegalArgumentException("존재하지 않는 기프티콘 ID가 포함되어 있습니다.");
         }
-        User user = userRepository.findByIdOrThrow(userId);
-
-        userGifticons.forEach(userGifticon -> fundingArticle.joinFundingContribute(userGifticon, user));
+        fundingArticle.joinFundingContribute(userGifticons, funder);
     }
 }

@@ -119,5 +119,9 @@ public class FundingArticle extends BaseTimeEntity {
         userGifticon.changeOwner(funder, user);
     }
 
+    public void joinFundingContribute(List<UserGifticon> userGifticons, User funder) {
+        userGifticons.forEach(userGifticon -> joinFundingContribute(userGifticon, funder));
+    }
+
 
 }

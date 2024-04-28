@@ -44,10 +44,10 @@ public class User extends BaseTimeEntity implements UserDetails, OAuth2User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     private Vendor vendor;
 
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     private String vendorEmail;
 
     @Builder
