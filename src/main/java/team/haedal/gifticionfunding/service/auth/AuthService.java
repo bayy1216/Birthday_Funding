@@ -71,25 +71,4 @@ public class AuthService {
     }
 }
 
-@Component
-@RequiredArgsConstructor
-class OAuthLoginUseCase {
-    private final UserJpaRepository userRepository;
-    private final JwtProvider jwtProvider;
 
-    /**
-     * OAuth 로그인을 처리하는 UseCase
-     * 사용자 정보가 존재하지 않으면 새로운 사용자를 생성하고 JWT 토큰을 발급한다.
-     */
-    @Transactional
-    public LoginResponse invoke(VendorUserInfo vendorUserInfo) {
-        User user = userRepository.findByVendorEmailAndVendor(vendorUserInfo.getVendorEmail(), vendorUserInfo.getVendor()).orElseGet(() -> {
-            User newUser = User.create(vendorUserInfo);
-            return userRepository.save(newUser);
-        });
-        JwtUser jwtUser = JwtUser.of(user.getId(), user.getRole());
-        JwtToken token = jwtProvider.createToken(jwtUser);
-        return LoginResponse.from(token, user);
-    }
-
-}
