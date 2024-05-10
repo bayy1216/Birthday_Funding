@@ -1,5 +1,7 @@
 package team.haedal.gifticionfunding.service.user;
 
+import java.util.Objects;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -54,6 +56,9 @@ public class UserFriendService {
      */
     @Transactional
     public Long requestFriend(Long sendUserId, Long receivedUserId) {
+        if(Objects.equals(sendUserId, receivedUserId)){
+            throw new IllegalArgumentException("자기 자신에게 친구 요청을 보낼 수 없습니다.");
+        }
         User sendUser = userRepository.findByIdOrThrow(sendUserId);
         User receivedUser = userRepository.findByIdOrThrow(receivedUserId);
         FriendshipAction friendshipAction = FriendshipAction.create(sendUser, receivedUser, FriendShipActionStatus.REQUEST);

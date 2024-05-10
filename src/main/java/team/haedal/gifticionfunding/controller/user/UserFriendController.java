@@ -41,8 +41,8 @@ public class UserFriendController {
     @Operation(summary = "친구 요청 하기", description = "친구 요청 id 반환")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/api/user/friend-request/sent/{friendId}")
-    public Long requestFriend(@LoginUserId Long userId, @PathVariable Long friendId) {
-        return userFriendService.requestFriend(userId, friendId);
+    public Long requestFriend(@AuthenticationPrincipal JwtDetails jwtDetails, @PathVariable Long friendId) {
+        return userFriendService.requestFriend(jwtDetails.getUserId(), friendId);
     }
 
     @Operation(summary = "내가 받은 친구 요청 목록 조회", description = "친구 요청 목록 페이징 조회")

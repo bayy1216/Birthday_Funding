@@ -66,9 +66,9 @@ public class WebSecurityConfig {
                                 "/api/auth/**",
                                 "/swagger-ui/**"
                         ).permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/gifticons").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/gifticons/{id}").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/gifticons").hasRole("ADMIN")
+                        // .requestMatchers(HttpMethod.POST, "/api/gifticons").hasRole("ADMIN")
+                        // .requestMatchers(HttpMethod.PUT, "/api/gifticons/{id}").hasRole("ADMIN")
+                        // .requestMatchers(HttpMethod.DELETE, "/api/gifticons").hasRole("ADMIN")
                         .anyRequest().authenticated()
         );
 
