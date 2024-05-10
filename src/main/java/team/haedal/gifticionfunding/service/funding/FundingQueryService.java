@@ -10,6 +10,7 @@ import team.haedal.gifticionfunding.dto.gifticon.response.GifticonModel;
 import team.haedal.gifticionfunding.entity.funding.FundingArticle;
 import team.haedal.gifticionfunding.entity.funding.FundingArticleGifticon;
 import team.haedal.gifticionfunding.entity.funding.FundingContribute;
+import team.haedal.gifticionfunding.entity.gifticon.Gifticon;
 import team.haedal.gifticionfunding.repository.funding.FundingQueryRepository;
 
 import java.util.List;
@@ -28,6 +29,15 @@ public class FundingQueryService {
     public FundingArticleDetailModel getFundingDetail(Long fundingId) {
         FundingArticle fundingArticle = fundingQueryRepository.findByIdWithUserOrThrow(fundingId);
 
-        return FundingArticleDetailModel.from(fundingArticle);
+        Integer currentMoney = fundingQueryRepository.getFundingArticleCurrentMoney(fundingId);
+
+        List<Gifticon> gifticons = fundingArticle.getFundingArticleGifticons()
+                .stream()
+                .map(FundingArticleGifticon::getGifticon)
+                .toList();
+
+
+        return FundingArticleDetailModel.from(fundingArticle, currentMoney, gifticons);
     }
+
 }
