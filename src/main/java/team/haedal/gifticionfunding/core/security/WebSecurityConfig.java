@@ -3,6 +3,8 @@ package team.haedal.gifticionfunding.core.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -96,6 +98,14 @@ public class WebSecurityConfig {
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(bCryptPasswordEncoder);
         return http.getSharedObject(AuthenticationManager.class);
+    }
+
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER\n"
+            + "ROLE_USER > ROLE_GUEST");
+        return roleHierarchy;
     }
 
     @Bean
