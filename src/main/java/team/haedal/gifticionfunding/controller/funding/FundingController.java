@@ -12,6 +12,7 @@ import team.haedal.gifticionfunding.dto.common.PagingResponse;
 import team.haedal.gifticionfunding.dto.funding.request.FundingCreateRequest;
 import team.haedal.gifticionfunding.dto.funding.request.FundingJoinRequest;
 import team.haedal.gifticionfunding.dto.funding.response.FundingArticleDetailModel;
+import team.haedal.gifticionfunding.dto.funding.response.FundingArticleModel;
 import team.haedal.gifticionfunding.dto.gifticon.response.GifticonModel;
 import team.haedal.gifticionfunding.entity.funding.FundingArticle;
 import team.haedal.gifticionfunding.service.funding.FundingQueryService;
@@ -25,7 +26,7 @@ public class FundingController {
     private final FundingQueryService fundingQueryService;
 
     @GetMapping("/api/fundings")
-    public PagingResponse<GifticonModel> pagingFundings(@AuthenticationPrincipal JwtDetails jwtDetails,
+    public PagingResponse<FundingArticleModel> pagingFundings(@AuthenticationPrincipal JwtDetails jwtDetails,
             @Valid PagingRequest pagingRequest
     ) {
         return fundingQueryService.pagingFundings(pagingRequest, jwtDetails.getUserId());
