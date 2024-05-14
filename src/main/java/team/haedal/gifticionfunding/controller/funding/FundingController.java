@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import team.haedal.gifticionfunding.core.security.JwtDetails;
 import team.haedal.gifticionfunding.dto.common.PagingRequest;
 import team.haedal.gifticionfunding.dto.common.PagingResponse;
+import team.haedal.gifticionfunding.dto.funding.request.CloseFundingRequest;
 import team.haedal.gifticionfunding.dto.funding.request.FundingCreateRequest;
 import team.haedal.gifticionfunding.dto.funding.request.FundingJoinRequest;
+import team.haedal.gifticionfunding.dto.funding.response.CloseFundingResponse;
 import team.haedal.gifticionfunding.dto.funding.response.FundingArticleDetailModel;
 import team.haedal.gifticionfunding.dto.funding.response.FundingArticleModel;
 import team.haedal.gifticionfunding.dto.gifticon.response.GifticonModel;
@@ -52,5 +54,13 @@ public class FundingController {
         fundingService.joinFunding(fundingId, request.gifticonIds(), jwtDetails.getUserId());
 
     }
+
+    @PostMapping("/api/fundings/{fundingId}/close")
+    public CloseFundingResponse closeFunding(@PathVariable Long fundingId,
+                                             @Valid @RequestBody CloseFundingRequest request,
+                                             @AuthenticationPrincipal JwtDetails jwtDetails) {
+        return fundingService.closeFunding(fundingId, request.fundingGifticonIds(),jwtDetails.getUserId());
+    }
+
 
 }

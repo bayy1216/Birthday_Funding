@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.haedal.gifticionfunding.domain.Status;
 import team.haedal.gifticionfunding.domain.funding.FundingArticleCreate;
+import team.haedal.gifticionfunding.dto.funding.response.CloseFundingResponse;
 import team.haedal.gifticionfunding.entity.funding.FundingArticle;
 import team.haedal.gifticionfunding.entity.funding.FundingContribute;
 import team.haedal.gifticionfunding.entity.gifticon.Gifticon;
@@ -65,5 +66,10 @@ public class FundingService {
             throw new IllegalArgumentException("존재하지 않는 기프티콘 ID가 포함되어 있습니다.");
         }
         fundingArticle.joinFundingContribute(userGifticons, funder);
+    }
+
+    @Transactional
+    public CloseFundingResponse closeFunding(Long fundingId, List<Long> longs, Long userId) {
+        throw new UnsupportedOperationException("펀딩 종료 기능은 아직 구현되지 않았습니다.");
     }
 }
