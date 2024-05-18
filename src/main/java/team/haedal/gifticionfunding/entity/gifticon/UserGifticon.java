@@ -38,6 +38,16 @@ public class UserGifticon extends BaseTimeEntity {
     @Column(length = 16)
     private String giftCode;
 
+    @Builder
+    private UserGifticon(Long id, User buyer, User owner, Gifticon gifticon, LocalDate expirationDate, LocalDate usedDate, String giftCode) {
+        this.id = id;
+        this.buyer = buyer;
+        this.owner = owner;
+        this.gifticon = gifticon;
+        this.expirationDate = expirationDate;
+        this.usedDate = usedDate;
+        this.giftCode = giftCode;
+    }
 
     /**
      * 펀딩게시글에 기부할 수 있는지 확인
@@ -64,7 +74,7 @@ public class UserGifticon extends BaseTimeEntity {
     }
 
     public boolean isOpened(){
-        return gifticon != null;
+        return giftCode != null;
     }
 
     public int getPrice(){

@@ -6,17 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import team.haedal.gifticionfunding.domain.funding.FundingArticleCreate;
 import team.haedal.gifticionfunding.domain.giftucon.GifticonCreate;
+import team.haedal.gifticionfunding.entity.funding.FundingArticle;
 import team.haedal.gifticionfunding.entity.funding.FundingArticleSubscriber;
+import team.haedal.gifticionfunding.entity.funding.FundingContribute;
 import team.haedal.gifticionfunding.entity.gifticon.Gifticon;
+import team.haedal.gifticionfunding.entity.gifticon.UserGifticon;
 import team.haedal.gifticionfunding.entity.user.Friendship;
 import team.haedal.gifticionfunding.entity.user.User;
 import team.haedal.gifticionfunding.fixture.EntityGenerator;
 import team.haedal.gifticionfunding.repository.funding.FundingArticleJpaRepository;
 import team.haedal.gifticionfunding.repository.funding.FundingArticleSubscriberJpaRepository;
+import team.haedal.gifticionfunding.repository.funding.FundingContributeJpaRepository;
 import team.haedal.gifticionfunding.repository.gifticon.GifticonJpaRepository;
+import team.haedal.gifticionfunding.repository.gifticon.UserGifticonJpaRepository;
 import team.haedal.gifticionfunding.repository.user.FriendshipJpaRepository;
 import team.haedal.gifticionfunding.repository.user.UserJpaRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,7 +37,8 @@ class FundingServiceTest extends EntityGenerator {
     @Autowired private UserJpaRepository userJpaRepository;
     @Autowired private FriendshipJpaRepository friendshipJpaRepository;
     @Autowired private FundingArticleSubscriberJpaRepository fundingArticleSubscriberJpaRepository;
-
+    @Autowired private UserGifticonJpaRepository userGifticonRepository;
+    @Autowired private FundingContributeJpaRepository fundingContributeRepository;
 
     @DisplayName("펀딩 생성이 정상 작동한다.")
     @Test
@@ -123,8 +130,37 @@ class FundingServiceTest extends EntityGenerator {
         assertThat(subscribers.size()).isEqualTo(3);
     }
 
+    @DisplayName("펀딩 참여가 정상 작동한다.")
     @Test
     void joinFunding() {
+        User user1 = super.createUser("email1", "nickname1");
+        //given
+        Gifticon gifticon1 = createGifticon("gifticon1");
+        Gifticon gifticon2 = createGifticon("gifticon2");
+        gifticonJpaRepository.saveAll(List.of(gifticon1, gifticon2));
+        userJpaRepository.save(user1);
+        var command = FundingArticleCreate.builder()
+                .title("title")
+                .content("content")
+                .startAt(LocalDateTime.of(2022,10,24,0,0,0))
+                .endAt(LocalDateTime.of(2022,10,28,0,0,0))
+                .build();
+        FundingArticle fundingArticle = FundingArticle.create(command, user1, List.of(gifticon1, gifticon2));
+        fundingArticleJpaRepository.save(fundingArticle);
+
+        //when
+        UserGifticon userGifticon = UserGifticon.builder()
+                .owner(user1)
+                .buyer(user1)
+                .gifticon(gifticon1)
+                .expirationDate(LocalDate.MAX)
+                .build();
+        userGifticonRepository.save(userGifticon);
+        fundingService.joinFunding(fundingArticle.getId(), List.of(userGifticon.getId()), user1.getId());
+
+        //then
+        List<FundingContribute> contributes = fundingContributeRepository.findAll();
+        assertThat(contributes.size()).isEqualTo(1);
     }
 
 
