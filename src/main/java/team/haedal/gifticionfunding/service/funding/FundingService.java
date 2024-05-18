@@ -9,14 +9,17 @@ import team.haedal.gifticionfunding.domain.funding.FundingArticleCreate;
 import team.haedal.gifticionfunding.dto.funding.response.CloseFundingResponse;
 import team.haedal.gifticionfunding.entity.funding.FundingArticle;
 import team.haedal.gifticionfunding.entity.funding.FundingArticleGifticon;
+import team.haedal.gifticionfunding.entity.funding.FundingArticleSubscriber;
 import team.haedal.gifticionfunding.entity.funding.FundingContribute;
 import team.haedal.gifticionfunding.entity.gifticon.Gifticon;
 import team.haedal.gifticionfunding.entity.gifticon.UserGifticon;
 import team.haedal.gifticionfunding.entity.user.User;
 import team.haedal.gifticionfunding.repository.funding.FundingArticleJpaRepository;
+import team.haedal.gifticionfunding.repository.funding.FundingArticleSubscriberJpaRepository;
 import team.haedal.gifticionfunding.repository.funding.FundingContributeJpaRepository;
 import team.haedal.gifticionfunding.repository.gifticon.GifticonJpaRepository;
 import team.haedal.gifticionfunding.repository.gifticon.UserGifticonJpaRepository;
+import team.haedal.gifticionfunding.repository.user.FriendshipQueryRepository;
 import team.haedal.gifticionfunding.repository.user.UserJpaRepository;
 
 import java.util.List;
@@ -30,13 +33,15 @@ public class FundingService {
     private final GifticonJpaRepository gifticonRepository;
     private final FundingArticleJpaRepository fundingArticleRepository;
     private final UserGifticonJpaRepository userGifticonRepository;
-    private final FundingContributeJpaRepository fundingContributeRepository;
+    private final FundingArticleSubscriberJpaRepository fundingArticleSubscriberRepository;
+    private final FriendshipQueryRepository friendshipQueryRepository;
 
     /**
      * 펀딩 생성
      * 1. 펀딩 게시글을 생성
      * 2. 희망 기프티콘을 giftcionIds로 조회하여 펀딩 게시글에 등록
-     * 3. 펀딩 게시글 ID 반환
+     * 3. 펀딩 게시글을 친구의 친구들에게 공유
+     * 4. 펀딩 게시글 ID 반환
      */
     @Transactional
     public Long createFunding(FundingArticleCreate create, List<Long> gifticonIds, Long userId) {
@@ -49,6 +54,13 @@ public class FundingService {
         }
         FundingArticle fundingArticle = FundingArticle.create(create, user, gifticons);
         fundingArticleRepository.save(fundingArticle);
+
+        List<Long> friendOfFriendIds = friendshipQueryRepository.getFriendOfFriendIds(userId);
+
+
+        List<FundingArticleSubscriber> subscribers = FundingArticleSubscriber.createByUserIds(fundingArticle, friendOfFriendIds);
+        fundingArticleSubscriberRepository.saveAll(subscribers);
+
         return fundingArticle.getId();
     }
 

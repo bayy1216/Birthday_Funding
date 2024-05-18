@@ -8,6 +8,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import team.haedal.gifticionfunding.entity.user.User;
 
+import java.util.List;
+
 /**
  * 펀딩 게시글 구독자 테이블 <br>
  * 게시글을 작성시 작성자와 친구인 사용자들의 최근 게시글을 조회하기 위해 사용 <p>
@@ -30,4 +32,17 @@ public class FundingArticleSubscriber {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     private User subscriber;
+
+    public static FundingArticleSubscriber createById(FundingArticle fundingArticle, Long userId) {
+        FundingArticleSubscriber fundingArticleSubscriber = new FundingArticleSubscriber();
+        fundingArticleSubscriber.fundingArticle = fundingArticle;
+        fundingArticleSubscriber.subscriber = User.mockById(userId);
+        return fundingArticleSubscriber;
+    }
+
+    public static List<FundingArticleSubscriber> createByUserIds(FundingArticle fundingArticle, List<Long> userIds) {
+        return userIds.stream()
+                .map(userId -> FundingArticleSubscriber.createById(fundingArticle, userId))
+                .toList();
+    }
 }

@@ -50,6 +50,12 @@ public class User extends BaseTimeEntity implements UserDetails, OAuth2User {
     @Column(updatable = false)
     private String vendorEmail;
 
+    public static User mockById(Long id) {
+        User user = new User();
+        user.id = id;
+        return user;
+    }
+
     @Builder
     private User(String email, String password, String nickname, Integer point, LocalDate birthdate, String profileImageUrl, Role role, Vendor vendor, String vendorEmail) {
         this.email = email;

@@ -39,4 +39,20 @@ public class FriendshipQueryRepository {
                 .fetch();
         return new PageImpl<>(friendships, pageRequest, count);
     }
+
+
+    public List<Long> getFriendOfFriendIds(Long userId) {
+        return jpaQueryFactory.from(QFriendship.friendship)
+                .select(QFriendship.friendship.friend.id)
+                .where(
+                        QFriendship.friendship.user.id.in(
+                                jpaQueryFactory.from(QFriendship.friendship)
+                                        .select(QFriendship.friendship.friend.id)
+                                        .where(
+                                                QFriendship.friendship.user.id.eq(userId)
+                                        )
+                        )
+                )
+                .fetch();
+    }
 }

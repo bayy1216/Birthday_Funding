@@ -5,6 +5,7 @@ import team.haedal.gifticionfunding.domain.user.Vendor;
 import team.haedal.gifticionfunding.entity.user.User;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 public abstract class EntityGenerator {
 
