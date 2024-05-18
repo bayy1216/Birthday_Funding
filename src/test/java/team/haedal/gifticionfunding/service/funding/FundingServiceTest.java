@@ -1,5 +1,7 @@
 package team.haedal.gifticionfunding.service.funding;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,18 @@ class FundingServiceTest extends EntityGenerator {
     @Autowired private FundingArticleSubscriberJpaRepository fundingArticleSubscriberJpaRepository;
     @Autowired private UserGifticonJpaRepository userGifticonRepository;
     @Autowired private FundingContributeJpaRepository fundingContributeRepository;
+
+    @AfterEach
+    void tearDown() {
+        fundingArticleSubscriberJpaRepository.deleteAll();
+        fundingContributeRepository.deleteAll();
+
+        fundingArticleJpaRepository.deleteAll();
+        userGifticonRepository.deleteAll();
+        gifticonJpaRepository.deleteAll();
+        friendshipJpaRepository.deleteAll();
+        userJpaRepository.deleteAll();
+    }
 
     @DisplayName("펀딩 생성이 정상 작동한다.")
     @Test
