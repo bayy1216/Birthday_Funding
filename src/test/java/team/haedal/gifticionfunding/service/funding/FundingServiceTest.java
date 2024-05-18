@@ -44,14 +44,13 @@ class FundingServiceTest extends EntityGenerator {
 
     @AfterEach
     void tearDown() {
-        fundingArticleSubscriberJpaRepository.deleteAll();
-        fundingContributeRepository.deleteAll();
-
-        fundingArticleJpaRepository.deleteAll();
-        userGifticonRepository.deleteAll();
-        gifticonJpaRepository.deleteAll();
-        friendshipJpaRepository.deleteAll();
-        userJpaRepository.deleteAll();
+        fundingArticleSubscriberJpaRepository.deleteAllInBatch();
+        fundingContributeRepository.deleteAllInBatch();
+        fundingArticleJpaRepository.deleteAllInBatch();
+        userGifticonRepository.deleteAllInBatch();
+        gifticonJpaRepository.deleteAllInBatch();
+        friendshipJpaRepository.deleteAllInBatch();
+        userJpaRepository.deleteAllInBatch();
     }
 
     @DisplayName("펀딩 생성이 정상 작동한다.")
