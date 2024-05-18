@@ -10,16 +10,14 @@ import team.haedal.gifticionfunding.dto.funding.response.CloseFundingResponse;
 import team.haedal.gifticionfunding.entity.funding.FundingArticle;
 import team.haedal.gifticionfunding.entity.funding.FundingArticleGifticon;
 import team.haedal.gifticionfunding.entity.funding.FundingArticleSubscriber;
-import team.haedal.gifticionfunding.entity.funding.FundingContribute;
 import team.haedal.gifticionfunding.entity.gifticon.Gifticon;
 import team.haedal.gifticionfunding.entity.gifticon.UserGifticon;
 import team.haedal.gifticionfunding.entity.user.User;
 import team.haedal.gifticionfunding.repository.funding.FundingArticleJpaRepository;
 import team.haedal.gifticionfunding.repository.funding.FundingArticleSubscriberJpaRepository;
-import team.haedal.gifticionfunding.repository.funding.FundingContributeJpaRepository;
 import team.haedal.gifticionfunding.repository.gifticon.GifticonJpaRepository;
 import team.haedal.gifticionfunding.repository.gifticon.UserGifticonJpaRepository;
-import team.haedal.gifticionfunding.repository.user.FriendshipQueryRepository;
+import team.haedal.gifticionfunding.repository.user.FriendshipJpaRepository;
 import team.haedal.gifticionfunding.repository.user.UserJpaRepository;
 
 import java.util.List;
@@ -34,7 +32,7 @@ public class FundingService {
     private final FundingArticleJpaRepository fundingArticleRepository;
     private final UserGifticonJpaRepository userGifticonRepository;
     private final FundingArticleSubscriberJpaRepository fundingArticleSubscriberRepository;
-    private final FriendshipQueryRepository friendshipQueryRepository;
+    private final FriendshipJpaRepository friendshipJpaRepository;
 
     /**
      * 펀딩 생성
@@ -55,7 +53,7 @@ public class FundingService {
         FundingArticle fundingArticle = FundingArticle.create(create, user, gifticons);
         fundingArticleRepository.save(fundingArticle);
 
-        List<Long> friendOfFriendIds = friendshipQueryRepository.getFriendOfFriendIds(userId);
+        List<Long> friendOfFriendIds = friendshipJpaRepository.getFriendOfFriendIds(userId);
 
 
         List<FundingArticleSubscriber> subscribers = FundingArticleSubscriber.createByUserIds(fundingArticle, friendOfFriendIds);
