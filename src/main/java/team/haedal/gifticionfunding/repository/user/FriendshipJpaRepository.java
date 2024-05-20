@@ -15,4 +15,6 @@ public interface FriendshipJpaRepository extends JpaRepository<Friendship, Long>
             ") UNION SELECT fff.friend_id FROM friendship fff WHERE fff.user_id = :userId",
             nativeQuery = true)
     List<Long> getFriendOfFriendIds(@Param("userId") Long userId);
+
+    List<Friendship> findAllByUserId(Long userId);
 }

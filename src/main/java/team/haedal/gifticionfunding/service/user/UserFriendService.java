@@ -1,5 +1,6 @@
 package team.haedal.gifticionfunding.service.user;
 
+import java.util.List;
 import java.util.Objects;
 
 import lombok.RequiredArgsConstructor;
@@ -14,9 +15,13 @@ import team.haedal.gifticionfunding.dto.common.PagingResponse;
 import team.haedal.gifticionfunding.dto.user.response.FriendReceivedHistoryModel;
 import team.haedal.gifticionfunding.dto.user.response.FriendSentHistoryModel;
 import team.haedal.gifticionfunding.dto.user.response.UserInfoModel;
+import team.haedal.gifticionfunding.entity.funding.FundingArticle;
+import team.haedal.gifticionfunding.entity.funding.FundingArticleSubscriber;
 import team.haedal.gifticionfunding.entity.user.Friendship;
 import team.haedal.gifticionfunding.entity.user.FriendshipAction;
 import team.haedal.gifticionfunding.entity.user.User;
+import team.haedal.gifticionfunding.repository.funding.FundingArticleJpaRepository;
+import team.haedal.gifticionfunding.repository.funding.FundingArticleSubscriberJpaRepository;
 import team.haedal.gifticionfunding.repository.user.FriendshipActionJpaRepository;
 import team.haedal.gifticionfunding.repository.user.FriendshipJpaRepository;
 import team.haedal.gifticionfunding.repository.user.FriendshipQueryRepository;
@@ -29,7 +34,8 @@ public class UserFriendService {
     private final FriendshipJpaRepository friendshipRepository;
     private final FriendshipQueryRepository friendshipQueryRepository;
     private final FriendshipActionJpaRepository friendshipActionRepository;
-
+    private final FundingArticleJpaRepository fundingArticleRepository;
+    private final FundingArticleSubscriberJpaRepository fundingArticleSubscriberRepository;
 
     /**
      * 친구 목록 페이징 조회 A->B 관계의 A 사용자의 친구 목록을 조회한다.
@@ -56,7 +62,7 @@ public class UserFriendService {
      */
     @Transactional
     public Long requestFriend(Long sendUserId, Long receivedUserId) {
-        if(Objects.equals(sendUserId, receivedUserId)){
+        if (Objects.equals(sendUserId, receivedUserId)) {
             throw new IllegalArgumentException("자기 자신에게 친구 요청을 보낼 수 없습니다.");
         }
         User sendUser = userRepository.findByIdOrThrow(sendUserId);
@@ -87,14 +93,42 @@ public class UserFriendService {
     public void acceptFriendRequest(Long userId, Long actionId) {
         FriendshipAction action = friendshipActionRepository.findById(actionId)
                 .orElseThrow(() -> new ResourceNotFoundException("친구요청", actionId));
-        if(!action.getToUser().getId().equals(userId)) {
+        if (!action.getToUser().getId().equals(userId)) {
             throw new IllegalArgumentException("다른 사용자의 친구 요청을 수락할 수 없습니다.");
         }
         Pair<Friendship, Friendship> pair = action.makeFriendship();
         friendshipRepository.save(pair.getFirst());
         friendshipRepository.save(pair.getSecond());
         friendshipActionRepository.delete(action);
+
+        Long fromUserId = action.getFromUser().getId();
+        Long toUserId = action.getToUser().getId();
+
+        // 펀딩게시글 구독을 갱신하는 작업. A와 B가 친구가 되었을 때,
+        // A의 친구들의 게시글을 B가 구독하게 한다.
+        // B의 친구들의 게시글을 A가 구독하게 한다.
+
+        addSubscribe(fromUserId, toUserId);
+        addSubscribe(toUserId, fromUserId);
     }
+
+    private void addSubscribe(Long userId, Long newFriendId){
+        List<Long> prevFriendsId = friendshipRepository.findAllByUserId(userId)
+                .stream().map(f -> f.getFriend().getId()).toList();
+        List<Long> friendsIdOfNewFriend = friendshipRepository.findAllByUserId(newFriendId)
+                .stream().map(f -> f.getFriend().getId()).toList();
+        List<Long> saveFriendsId = friendsIdOfNewFriend.stream()
+                .filter(friendId -> !prevFriendsId.contains(friendId))
+                .toList();
+        List<FundingArticle> fundingArticles = fundingArticleRepository.findAllByUserIdIn(saveFriendsId);
+        List<FundingArticleSubscriber> subscribers = fundingArticles
+                .stream()
+                .map(article -> FundingArticleSubscriber.createById(article, userId))
+                .toList();
+        fundingArticleSubscriberRepository.saveAll(subscribers);
+    }
+
+
 
     /**
      * 친구 요청을 거절한다.
@@ -103,7 +137,7 @@ public class UserFriendService {
     public void rejectFriendRequest(Long userId, Long actionId) {
         FriendshipAction action = friendshipActionRepository.findById(actionId)
                 .orElseThrow(() -> new IllegalArgumentException("친구 요청이 존재하지 않습니다."));
-        if(!action.getToUser().getId().equals(userId)) {
+        if (!action.getToUser().getId().equals(userId)) {
             throw new IllegalArgumentException("다른 사용자의 친구 요청을 거절할 수 없습니다.");
         }
         action.reject();
