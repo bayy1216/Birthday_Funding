@@ -8,6 +8,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import team.haedal.gifticionfunding.entity.user.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -29,6 +30,8 @@ public class FundingArticleSubscriber {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private FundingArticle fundingArticle;
 
+    private LocalDateTime articleCreatedAt;
+
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     private User subscriber;
@@ -36,6 +39,7 @@ public class FundingArticleSubscriber {
     public static FundingArticleSubscriber createById(FundingArticle fundingArticle, Long userId) {
         FundingArticleSubscriber fundingArticleSubscriber = new FundingArticleSubscriber();
         fundingArticleSubscriber.fundingArticle = fundingArticle;
+        fundingArticleSubscriber.articleCreatedAt = fundingArticle.getCreatedAt();
         fundingArticleSubscriber.subscriber = User.mockById(userId);
         return fundingArticleSubscriber;
     }

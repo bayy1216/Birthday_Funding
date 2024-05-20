@@ -54,6 +54,9 @@ public class FundingService {
         fundingArticleRepository.save(fundingArticle);
 
         List<Long> friendOfFriendIds = friendshipJpaRepository.getFriendOfFriendIds(userId);
+        if(!friendOfFriendIds.contains(userId)) {
+            friendOfFriendIds.add(userId);
+        }
 
 
         List<FundingArticleSubscriber> subscribers = FundingArticleSubscriber.createByUserIds(fundingArticle, friendOfFriendIds);
