@@ -1,1 +1,6 @@
 rootProject.name = 'GifticionFunding'
+
+include(
+        ':funding-api-server:app',
+        ':funding-api-server:test-module',
+)
