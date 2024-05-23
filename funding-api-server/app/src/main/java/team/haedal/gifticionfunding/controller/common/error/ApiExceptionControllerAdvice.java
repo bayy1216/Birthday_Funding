@@ -55,6 +55,7 @@ public class ApiExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse runtimeExceptionHandler(RuntimeException e){
         log.error("RuntimeException : {}", e.getMessage());
+        log.error("RuntimeException : {}", e.getStackTrace());
         return ErrorResponse.builder()
                 .debugMessage(e.getMessage())
                 .code(List.of("RuntimeException"))
