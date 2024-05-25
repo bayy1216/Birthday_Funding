@@ -1,12 +1,9 @@
 spring: # default test profile
   datasource:
-#    url: "jdbc:h2:mem:birthdayFunding;"
-    url: jdbc:mysql://localhost:3306/funding
-#    username: "sa"
-#    password: ""
-    username: "root"
-    password: "root"
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: "jdbc:h2:mem:birthdayFunding;"
+    username: "sa"
+    password: ""
+    driver-class-name: org.h2.Driver
   jpa:
     hibernate:
       ddl-auto: create
@@ -14,10 +11,10 @@ spring: # default test profile
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     properties:
       hibernate:
-#        dialect: org.hibernate.dialect.H2Dialect
-        dialect: org.hibernate.dialect.MySQL8Dialect
-    defer-datasource-initialization: true
-  sql.init.mode: always
+        dialect: org.hibernate.dialect.H2Dialect
+#        dialect: org.hibernate.dialect.MySQL8Dialect
+#    defer-datasource-initialization: true
+  sql.init.mode: never
   h2:
     console:
       enabled: false
@@ -59,3 +56,24 @@ cloud:
       auto: false
     stack:
       auto: false
+
+---
+spring: # dev profile
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:mysql://localhost:3306/funding
+    username: "root"
+    password: "root"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    defer-datasource-initialization: true
+  sql.init.mode: always
